@@ -32,4 +32,12 @@
 
   > [Paper](https://arxiv.org/abs/2006.11239) & [Website](https://hojonathanho.github.io/diffusion/) & [Video](https://slideslive.com/38936172) & [Code(official Tensorflow version)](https://github.com/hojonathanho/diffusion) & [Code(Pytorch version)](https://github.com/lucidrains/denoising-diffusion-pytorch) & [An In-Depth Guide Blog](https://learnopencv.com/denoising-diffusion-probabilistic-models/)
 
-  This paper proposes 
+  ![Figure 4. The directed graphical model considered in DDPM.](./assets/figure4.png)
+  
+  DDPM theoretically proves that the variational inference objective (maximizing log‑likelihood) and the mean‑squared‑error training for noise prediction are mathematically equivalent, unifying the two viewpoints. From the variational inference perspective, DDPM decomposes the log‑likelihood lower bound (VLB) into a series of KL divergences. From the score‑matching perspective, the network implicitly performs score matching on each noisy data distribution by predicting the added noise. Optimizing the VLB naturally yields a weighted noise‑prediction (score‑matching) objective, and conversely, directly training to predict noise also maximizes the data log‑likelihood.
+
+  ![Figure 5. From variational inference to denoising score matching.](./assets/figure5.png)
+
+  The training loss evolves from variational inference to denoising score matching, and Langevin dynamics is the natural sampler for denoising score matching.  
+  
+  ![Figure 6. Algorithms in DDPM.](./assets/figure6.png)
