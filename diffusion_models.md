@@ -12,7 +12,7 @@
 
    **Optimization objective & training**: By treating each reverse diffusion kernel as a parametric model, the core training objective becomes finding the optimal parameters of mean and covariance functions of each step’s reverse kernel that maximize this log‑likelihood bound, which is equivalent to simultaneously minimizing the KL divergence between the reverse kernel at each step and the true posterior. In this way, estimating a complex distribution reduces to predicting the parameters needed for each reverse diffusion step.
 - **2019: “Generative Modeling by Estimating Gradients of the Data Distribution” (Yang Song et al.)**
-  > [Paper](https://arxiv.org/abs/1907.05600) & [Blog](http://yang-song.net/blog/2021/score/) & [Video](https://www.youtube.com/watch?v=8TcNXi3A5DI) & Code & [Summary Video](https://www.youtube.com/watch?v=wMmqCMwuM2Q)  
+  > [Paper](https://arxiv.org/abs/1907.05600) & [Blog](http://yang-song.net/blog/2021/score/) & [Video](https://www.youtube.com/watch?v=8TcNXi3A5DI) & [Code](https://github.com/ermongroup/ncsn) & [Summary Video](https://www.youtube.com/watch?v=wMmqCMwuM2Q)  
   
   This paper proposes the framework of score-based generative modeling where they first estimate gradient of data log‑density, $\nabla_x \log p_{\rm data}(x)$, via score matching, and then generate samples by iteratively taking small steps in the direction of this learned score while injecting noise via Langevin dynamics. In this way, random noise “climbs” up the learned log‑density landscape into high‑probability regions, producing realistic new samples.
 
