@@ -2,7 +2,7 @@
 > [LiL's Log: What are Diffusion Models?](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)
 ## 1. Foundational Theory and Early Pioneering Works (2015–2019)
 
-- **2015 ICML: “Deep Unsupervised Learning using Nonequilibrium Thermodynamics” (Sohl‑Dickstein et al.)**
+- **2015 arXiv(ICML 2015): “Deep Unsupervised Learning using Nonequilibrium Thermodynamics” (Sohl‑Dickstein et al.)**
 
   > [Paper](https://arxiv.org/abs/1503.03585) & [Video](https://www.youtube.com/watch?v=XLzhbXeK-Os) & [Code](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/tree/master)
 
@@ -14,7 +14,7 @@
 
    **Optimization objective & training**: By treating each reverse diffusion kernel as a parametric model, the core training objective becomes finding the optimal parameters of mean and covariance functions of each step’s reverse kernel that maximize this log‑likelihood bound, which is equivalent to simultaneously minimizing the KL divergence between the reverse kernel at each step and the true posterior. In this way, estimating a complex distribution reduces to predicting the parameters needed for each reverse diffusion step.
 
-- **2019 NeurIPS: “Generative Modeling by Estimating Gradients of the Data Distribution” (YSong & Ermon)**
+- **2019 arXiv(NeurIPS 2019): “Generative Modeling by Estimating Gradients of the Data Distribution” (YSong & Ermon)**
   > [Paper](https://arxiv.org/abs/1907.05600) & [Blog](http://yang-song.net/blog/2021/score/) & [Video](https://www.youtube.com/watch?v=8TcNXi3A5DI) & [Code](https://github.com/ermongroup/ncsn) & [Summary Video](https://www.youtube.com/watch?v=wMmqCMwuM2Q)  
   
   The authors propose the framework of score-based generative modeling where they first estimate gradient of data log‑density, $\nabla_x \log p_{\rm data}(x)$, via score matching, and then generate samples by iteratively taking small steps in the direction of this learned score while injecting noise via Langevin dynamics. In this way, random noise “climbs” up the learned log‑density landscape into high‑probability regions, producing realistic new samples.
@@ -31,7 +31,7 @@
 
 ## 2. Core Diffusion Models (2020–2021)
 
-- **2020 NeurIPS: “Denoising Diffusion Probabilistic Models” (Ho et al.)**
+- **2020 arXiv(NeurIPS 2020): “Denoising Diffusion Probabilistic Models” (Ho et al.)**
 
   > [Paper](https://arxiv.org/abs/2006.11239) & [Website](https://hojonathanho.github.io/diffusion/) & [Video](https://slideslive.com/38936172) & [Code(official Tensorflow version)](https://github.com/hojonathanho/diffusion) & [Code(Pytorch version)](https://github.com/lucidrains/denoising-diffusion-pytorch) & [An In-Depth Guide Blog](https://learnopencv.com/denoising-diffusion-probabilistic-models/)
 
@@ -45,7 +45,23 @@
   
   ![Figure 6. Algorithms in DDPM.](./assets/figure6.png)
 
-- **2020 ICLR: “Denoising Diffusion Implicit Models” (Song et al.)**
+- **2020 arXiv(ICLR 2021): “Score-Based Generative Modeling through SDEs” (Song et al.)**
+
+  > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Blog](http://yang-song.net/blog/2021/score/) & [Code](https://github.com/yang-song/score_sde)
+
+  By elevating the traditional discrete noise-perturbation process to a continuous‑time stochastic differential equation (SDE) perspective, this work unifies various score-based generative models (such as SMLD and DDPM) under a single framework. Specifically, transforming data to a simple noise distribution can be accomplished with a continuous-time SDE and—according to Anderson’s 1982 result— this SDE can be reversed if we know the score of the distribution at each intermediate time step, $\nabla_x \log p_t(x)$. To train the score network $s_\theta(x, t)\approx \nabla_x \log p_t(x)$, the authors propose a unified, SDE-based objective using weighted denoising score matching (DSM).
+
+  ![Figure 9. Solving a reverse-time SDE yields a score-based generative model.](./assets/figure9.png)  
+
+  By designing different functions $f(t)$ and $g(t)$, various known models can be realized: When $f = 0$, $g(t) = \sqrt{2\beta(t)}$, it corresponds to the Variance Preserving (VP) SDE, which is equivalent to DDPM. When $f = -\frac{1}{2}\beta(t)\mathbf{x}$, $g(t) = \sqrt{\beta(t)}$, it corresponds to the Variance Exploding (VE) SDE, matching the original score-based models (e.g., NCSN). New diffusion paths can also be defined, such as sub-VP.
+
+  ![Figure 10. Overview of score-based generative modeling through SEDs.](./assets/figure10.png)
+
+  This paper formulates the generative process as a continuous dynamical system, where samplers are used to solve this system. The authors unify various sampling methods under the SDE framework: the reverse SDE can be solved using general-purpose SDE solvers such as Euler–Maruyama or stochastic Runge-Kutta. They propose the Predictor–Corrector (PC) sampler, which combines ancestral sampling (e.g., from DDPM) as the predictor step and Langevin MCMC (e.g., from SMLD) as the corrector step to refine the sample at each step. Additionally, they introduce the Probability Flow ODE sampler, a deterministic generative process that enables exact likelihood computation and controllable, path-consistent generation.  
+
+  Finally, the paper presents a method for conditional generation by incorporating the gradient of a classifier $\nabla_{\mathbf{x}} \log p_\phi(y|\mathbf{x})$ into the reverse SDE or ODE, enabling classifier guidance to steer the generation toward desired classes.
+
+- **2020 arXiv(ICLR 2021): “Denoising Diffusion Implicit Models” (Song et al.)**
 
   > [Paper](https://arxiv.org/abs/2010.02502) & [OpenReview](https://openreview.net/forum?id=St1giarCHLP) & [Video](https://slideslive.com/38953675) & [Code](https://github.com/ermongroup/ddim)
 
@@ -59,10 +75,8 @@
 
   This allows you to perform both the forward noise injection and reverse denoising only on a chosen subsequence ${\tau_1,\dots,\tau_S}$, so that when $S\ll T$, you achieve a 10×–100× speedup while maintaining high sample quality, with no retraining required.
 
-- **2021 ICLR: “Score-Based Generative Modeling through SDEs” (Song et al.)**
 
-  > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Code](https://github.com/yang-song/score_sde)
+  
 
-  The authors propose a framework for continuous-time score-based generative models that use stochastic defferential equations(SDEs).
   
   
