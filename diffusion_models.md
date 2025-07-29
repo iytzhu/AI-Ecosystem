@@ -61,6 +61,8 @@
 
 - **2021 ICLR: “Score-Based Generative Modeling through SDEs” (Song et al.)**
 
-  > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Video](https://www.youtube.com/watch?v=wMmqCMwuM2Q) & [Code](https://github.com/yang-song/score_sde)
+  > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Code](https://github.com/yang-song/score_sde)
 
+  The authors propose a framework for continuous-time score-based generative models that use stochastic defferential equations(SDEs).
+  
   
