@@ -59,3 +59,8 @@
 
   This allows you to perform both the forward noise injection and reverse denoising only on a chosen subsequence ${\tau_1,\dots,\tau_S}$, so that when $S\ll T$, you achieve a 10×–100× speedup while maintaining high sample quality, with no retraining required.
 
+- **2021 ICLR: “Score-Based Generative Modeling through SDEs” (Song et al.)**
+
+  > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Video](https://www.youtube.com/watch?v=wMmqCMwuM2Q) & [Code](https://github.com/yang-song/score_sde)
+
+  
