@@ -59,7 +59,7 @@
 
   This paper formulates the generative process as a continuous dynamical system, where samplers are used to solve this system. The authors unify various sampling methods under the SDE framework: the reverse SDE can be solved using general-purpose SDE solvers such as Euler–Maruyama or stochastic Runge-Kutta. They propose the Predictor–Corrector (PC) sampler, which combines ancestral sampling (e.g., from DDPM) as the predictor step and Langevin MCMC (e.g., from SMLD) as the corrector step to refine the sample at each step. Additionally, they introduce the Probability Flow ODE sampler, a deterministic generative process that enables exact likelihood computation and controllable, path-consistent generation.  
 
-  Finally, the paper presents a method for conditional generation by incorporating the gradient of a classifier $\nabla_{\mathbf{x}} \log p_\phi(y|\mathbf{x})$ into the reverse SDE or ODE, enabling classifier guidance to steer the generation toward desired classes.
+  Finally, the paper presents a method for conditional generation by incorporating the gradient of a classifier $\nabla_{\mathbf{x}} \log p_\phi(y|\mathbf{x})$ into the reverse SDE or ODE, enabling classifier guidance to steer the generation toward desired classes.  
 
 - **2020 arXiv(ICLR 2021): “Denoising Diffusion Implicit Models” (Song et al.)**
 
