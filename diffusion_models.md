@@ -90,3 +90,7 @@
   ![Figure 12. Learning curves comparing the log-likelihoods achieved by different objects on ImageNet 64\times64.](./assets/figure12.png)
 
   **Reducing Gradient Noise**: The authors confirm that greatly different magnitudes among different terms of L_vlb are the source of noise. To address this, they employ an importance sampling strategy, dynamically adjusting the sampling probability based on the historical mean squared values of each loss term, thereby significantly reducing gradient noise. This method makes direct optimization of L_vlb feasible, achieving superior log-likelihood performance compared to the hybrid objective L_hybrid, with a smoother training process.
+
+- **2021 arXiv(NeurIPS 2021): “Diffusion Models Beat GANs on Image Synthesis” (Dhariwal & Nichol)**
+
+  > [Paper](https://arxiv.org/abs/2105.05233) & [OpenReview](https://openreview.net/forum?id=AAWuCvzaVt) & [Video](https://slideslive.com/38967263) & [Code](https://github.com/openai/guided-diffusion)
