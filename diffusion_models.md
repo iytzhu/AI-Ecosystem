@@ -1,5 +1,5 @@
 # diffusion‑model timeline and key papers
-> [LiL's Log: What are Diffusion Models?](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)
+
 ## 1. Foundational Theory and Early Pioneering Works (2015–2019)
 
 - **2015 arXiv(ICML 2015): “Deep Unsupervised Learning using Nonequilibrium Thermodynamics” (Sohl‑Dickstein et al.)**
@@ -47,7 +47,7 @@
 
 - **2020 arXiv(ICLR 2021): “Score-Based Generative Modeling through SDEs” (Song et al.)**
 
-  > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Blog](http://yang-song.net/blog/2021/score/) & [Code](https://github.com/yang-song/score_sde)
+  > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Video](https://iclr.cc/virtual/2021/poster/3177) & [Blog](http://yang-song.net/blog/2021/score/) & [Code(Tensorflow version)](https://github.com/yang-song/score_sde) & [Code(Pytorch version)](https://github.com/yang-song/score_sde_pytorch)
 
   By elevating the traditional discrete noise-perturbation process to a continuous‑time stochastic differential equation (SDE) perspective, this work unifies various score-based generative models (such as SMLD and DDPM) under a single framework. Specifically, transforming data to a simple noise distribution can be accomplished with a continuous-time SDE and—according to Anderson’s 1982 result— this SDE can be reversed if we know the score of the distribution at each intermediate time step, $\nabla_x \log p_t(x)$. To train the score network $s_\theta(x, t)\approx \nabla_x \log p_t(x)$, the authors propose a unified, SDE-based objective using weighted denoising score matching (DSM).
 
@@ -75,8 +75,10 @@
 
   This allows you to perform both the forward noise injection and reverse denoising only on a chosen subsequence ${\tau_1,\dots,\tau_S}$, so that when $S\ll T$, you achieve a 10×–100× speedup while maintaining high sample quality, with no retraining required.
 
+- **2021 arXiv(ICML 2021): “Improved Denoising Diffusion Probabilistic Models” (Nichol & Dhariwal)**
+
+  > [Paper](https://arxiv.org/abs/2102.09672) & [OpenReview](https://openreview.net/forum?id=-NEXDKk8gZ) & [Code](https://github.com/openai/improved-diffusion)
 
   
-
   
   
