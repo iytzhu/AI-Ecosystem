@@ -79,6 +79,14 @@
 
   > [Paper](https://arxiv.org/abs/2102.09672) & [OpenReview](https://openreview.net/forum?id=-NEXDKk8gZ) & [Code](https://github.com/openai/improved-diffusion)
 
-  
-  
-  
+  This paper presents a series of improvements to DDPM models aimed at improving the log-likelihood.  
+
+  **Learning Variance**: It first identifies that although the variance is less critical than the mean for sample quality, the initial steps of the diffusion process contribute most significantly to the variational lower bound (VLB). To improve log-likelihood, the authors parameterize the variance as an interpolation between the theoretically optimal reverse variance $\tilde \beta_t$ and the forward process variance $\beta_t$ in the log domain. A hybrid objective $L_\text{hybrid}$ is introduced to jointly optimize the simplified DDPM objective $L_\text{simple}$ (for noise prediction) and the VLB $L_\text{vlb}$ (for likelihood optimization). In this setup, $L_\text{simple}$ serves as the primary signal for updating the mean network $\mu_\theta$, while stop-gradient applied to $\mu_\theta$ ensures that $L_\text{vlb}$ only guides the updates of the variance network $\Sigma_\theta$.
+
+  ![Figure 11. $\bar \alpha_t$ throughout diffusion in the linear schedule and their proposed cosine schedule.](./assets/figure11.png)
+
+  **Improving the Noise Schedule**: The authors propose a cosine noise schedule, which uses a squared cosine function to control the cumulative noise level $\bar \alpha_t$, ensuring gradual changes at the beginning and end of the diffusion process to avoid abrupt noise increases or premature information destruction, while allowing faster changes in the middle phase.
+
+  ![Figure 12. Learning curves comparing the log-likelihoods achieved by different objects on ImageNet 64\times64.](./assets/figure12.png)
+
+  **Reducing Gradient Noise**: The authors confirm that greatly different magnitudes among different terms of L_vlb are the source of noise. To address this, they employ an importance sampling strategy, dynamically adjusting the sampling probability based on the historical mean squared values of each loss term, thereby significantly reducing gradient noise. This method makes direct optimization of L_vlb feasible, achieving superior log-likelihood performance compared to the hybrid objective L_hybrid, with a smoother training process.
