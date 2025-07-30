@@ -94,3 +94,7 @@
 - **2021 arXiv(NeurIPS 2021): “Diffusion Models Beat GANs on Image Synthesis” (Dhariwal & Nichol)**
 
   > [Paper](https://arxiv.org/abs/2105.05233) & [OpenReview](https://openreview.net/forum?id=AAWuCvzaVt) & [Video](https://slideslive.com/38967263) & [Code](https://github.com/openai/guided-diffusion)
+
+  The authors show that diffusion models beat GANs on unconditional image synthesis by finding a better architecture through a series of ablations. The improvements are primarily focused on building on the DDPM’s U‑Net architecture by increasing the model’s depth and width, adding more attention heads, and employing attention mechanisms at multiple resolutions.
+
+  For conditional image synthesis, they further improve sample quality with classifier guidance. The idea here is that if you have class labels together with your dataset, you can train a classifier $p_\phi(y|x_t, t)$ on not only the dataset but also noisy samples of the dataset, and then you can use the gradients from this classifier $\nabla_{x_t}\log p_\phi(y|xt, t)$ in order to guide the generation during the reverse diffusion sampling process, enabling it to produce images of the specified class. Specifically, at each denoising sampling step, one only needs to add an offset term $\Sigma g$—determined by the classifier gradient $g$ and the model variance $\Sigma$—to the mean $\mu$ predicted by the unconditional model, thereby guiding the generation process towards the desired class.
