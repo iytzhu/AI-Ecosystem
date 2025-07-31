@@ -131,4 +131,11 @@
 
   They directly train a diffusion model conditioned on the trajectory return $y(\tau)$ from the offline dataset, using classifier-free guidance combined with low-temperature sampling to extract high-likelihood trajectories. Specifically, they condition the noise model on the trajectory return—first normalizing $R(\tau)$ to lie in $[0,1]$, then sampling with the condition $R(\tau)=1$ to obtain high-return trajectories. To generate trajectories that satisfy a given constraint $C_i$ or demonstrate a particular skill, they condition the noise model on a one-hot encoding of that constraint or skill.
 
-  
+- **2022 arXiv(ICML 2022): “Planning with Diffusion for Flexible Behavior Synthesis” (Janner et al.)**
+
+  > [Paper](https://arxiv.org/abs/2205.09991) & [Website](https://diffusion-planning.github.io/) & [Video](https://icml.cc/virtual/2022/oral/18292) & [Code](https://github.com/jannerm/diffuser)
+
+- **(IJRR 2024): “Diffusion Policy: Visuomotor Policy Learning via Action Diffusion” ( et al.)**
+
+  > [Paper]() & [Website]() & [Video]() & [Code]()
+
