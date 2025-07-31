@@ -98,3 +98,11 @@
   The authors show that diffusion models beat GANs on unconditional image synthesis by finding a better architecture through a series of ablations. The improvements are primarily focused on building on the DDPM’s U‑Net architecture by increasing the model’s depth and width, adding more attention heads, and employing attention mechanisms at multiple resolutions.
 
   For conditional image synthesis, they further improve sample quality with classifier guidance. The idea here is that if you have class labels together with your dataset, you can train a classifier $p_\phi(y|x_t, t)$ on not only the dataset but also noisy samples of the dataset, and then you can use the gradients from this classifier $\nabla_{x_t}\log p_\phi(y|xt, t)$ in order to guide the generation during the reverse diffusion sampling process, enabling it to produce images of the specified class. Specifically, at each denoising sampling step, one only needs to add an offset term $\Sigma g$—determined by the classifier gradient $g$ and the model variance $\Sigma$—to the mean $\mu$ predicted by the unconditional model, thereby guiding the generation process towards the desired class.
+## 3. Specific Applications of Diffusion Models
+### 3.1 Image Generation and Processing
+### 3.2 Physical Control System
+- **2022 arXiv(ICLR 2023): “Is Conditional Generative Modeling all you need for Decision-Making?” (Ajay et al.)**
+
+  > [Paper](https://arxiv.org/abs/2211.15657) & [OpenReview](https://openreview.net/forum?id=sP1fo2K9DFG) & [Website](https://anuragajay.github.io/decision-diffuser/) & [Video](https://iclr.cc/virtual/2023/oral/12696) & [Code](https://github.com/anuragajay/decision-diffuser)
+
+  
