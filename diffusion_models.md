@@ -123,4 +123,10 @@
 
   > [Paper](https://arxiv.org/abs/2211.15657) & [OpenReview](https://openreview.net/forum?id=sP1fo2K9DFG) & [Website](https://anuragajay.github.io/decision-diffuser/) & [Video](https://iclr.cc/virtual/2023/oral/12696) & [Code](https://github.com/anuragajay/decision-diffuser)
 
+  The authors demonstrate that, when action trajectories are non-smooth, the design of diffusing only the state sequence and then predicting actions via an inverse dynamics model outperforms jointly diffusing both states and actions. Specifically, this approach first diffuses the state sequence to generate an optimal state trajectory. Subsequently, for any two consecutive states $s_t$ and $s_{t+1}$ within the trajectory, it estimates the action required to achieve this state transition using an inverse dynamics model. This "plan the path first, then derive the actions" paradigm represents a key innovation that distinguishes methods like Decision Diffuser from traditional reinforcement learning and direct action generation approaches.
+
+  ![Figure 13. Planning with Decision Diffuser.](./assets/figure13.png)
+
+  They directly train a diffusion model conditioned on the trajectory return $y(\tau)$ from the offline dataset, using classifier-free guidance combined with low-temperature sampling to extract high-likelihood trajectories. Specifically, they condition the noise model on the trajectory return—first normalizing $R(\tau)$ to lie in $[0,1]$, then sampling with the condition $R(\tau)=1$ to obtain high-return trajectories. To generate trajectories that satisfy a given constraint $C_i$ or demonstrate a particular skill, they condition the noise model on a one-hot encoding of that constraint or skill.
+
   
