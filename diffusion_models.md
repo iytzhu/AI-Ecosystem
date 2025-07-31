@@ -133,7 +133,7 @@
 
 - **2022 arXiv(ICML 2022): “Planning with Diffusion for Flexible Behavior Synthesis” (Janner et al.)**
 
-  > [Paper](https://arxiv.org/abs/2205.09991) & [Website](https://diffusion-planning.github.io/) & [Video](https://icml.cc/virtual/2022/oral/18292) & [Code](https://github.com/jannerm/diffuser)
+  > [Paper](https://arxiv.org/abs/2205.09991) & [Website](https://diffusion-planning.github.io/) & [Video(ICML)](https://icml.cc/virtual/2022/oral/18292) or [Video(Youtube)](https://www.youtube.com/watch?v=ViBkYHg4rPI) & [Code](https://github.com/jannerm/diffuser)
 
 - **(IJRR 2024): “Diffusion Policy: Visuomotor Policy Learning via Action Diffusion” ( et al.)**
 
