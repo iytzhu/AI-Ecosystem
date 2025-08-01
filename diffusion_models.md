@@ -139,3 +139,4 @@
 
   > [Paper]() & [Website]() & [Video]() & [Code]()
 
+  The core contribution of this work is a denoising diffusion model and its probabilistic framework for behavior generation, Diffuser, specifically designed for trajectory data, capable of predicting all time steps of the entire plan simultaneously.
