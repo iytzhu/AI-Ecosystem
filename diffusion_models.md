@@ -103,6 +103,10 @@
 
 ### 3.1 Image Generation from Text Descriptions
 
+- **2021 arXiv(CVPR 2022): “High-Resolution Image Synthesis with Latent Diffusion Models” (Rombach et al.)** (stable diffusion)
+
+  > [Paper](https://arxiv.org/abs/2112.10752) & [Video](https://www.youtube.com/watch?v=-3EkERbcZns) & [Code](https://github.com/CompVis/latent-diffusion)
+
 - **2022 arXiv: “Hierarchical Text-Conditional Image Generation with CLIP Latents” (Ramesh et al.)** (DALL·E 2)
 
   > [Paper](https://arxiv.org/abs/2204.06125) & [Website]([https://openai.com/index/dall-e-2](https://openai.com/index/dall-e-2)/) & [Video](https://www.youtube.com/watch?v=TvBjoN3zkPY) & [Code](https://github.com/lucidrains/DALLE2-pytorch)
