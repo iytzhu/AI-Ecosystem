@@ -97,13 +97,19 @@
 
   The authors show that diffusion models beat GANs on unconditional image synthesis by finding a better architecture through a series of ablations. The improvements are primarily focused on building on the DDPM’s U‑Net architecture by increasing the model’s depth and width, adding more attention heads, and employing attention mechanisms at multiple resolutions.
 
-  For conditional image synthesis, they further improve sample quality with classifier guidance. The idea here is that if you have class labels together with your dataset, you can train a classifier $p_\phi(y|x_t, t)$ on not only the dataset but also noisy samples of the dataset, and then you can use the gradients from this classifier $\nabla_{x_t}\log p_\phi(y|xt, t)$ in order to guide the generation during the reverse diffusion sampling process, enabling it to produce images of the specified class. Specifically, at each denoising sampling step, one only needs to add an offset term $\Sigma g$—determined by the classifier gradient $g$ and the model variance $\Sigma$—to the mean $\mu$ predicted by the unconditional model, thereby guiding the generation process towards the desired class.
+  For conditional image synthesis, they further improve sample quality with classifier guidance. The idea here is that if you have class labels together with your dataset, you can train a classifier $p_\phi(y|x_t, t)$ on not only the dataset but also noisy samples of the dataset, and then you can use the gradients from this classifier $\nabla_{x_t}\log p_\phi(y|xt, t)$ in order to guide the generation during the reverse diffusion sampling process, enabling it to produce images of the specified class.
+
+  ![Figure 16. Algorithm 1 Classifier guided diffusion sampling.](./assets/figure16.png)
+
+  Specifically, at each denoising sampling step, one only needs to add an offset term $\Sigma g$—determined by the classifier gradient $g$ and the model variance $\Sigma$—to the mean $\mu$ predicted by the unconditional model, thereby guiding the generation process towards the desired class.
+
+  ![Figure 17. Algorithm 1 Classifier guided DDIM sampling.](./assets/figure17.png)
   
 - **2021 arXiv(NeurIPS 2021): “Classifier‑Free Diffusion Guidance” (Ho et al.)**
 
   > [Paper](https://arxiv.org/abs/2207.12598) & [OpenReview](https://openreview.net/forum?id=qw8AKxfYbI) & [Code](https://github.com/lucidrains/classifier-free-guidance-pytorch) & [Blog](https://sander.ai/2022/05/26/guidance.html)
 
-  The classfier must be trained on the noisy data so it is generally not possible to plug in a pre-trained classifier. Rather than sampling in the direction of the gradient of an image classifier, classifier-free guidance instead mixes the score estimates of a conditional diffusion model and a jointly trained unconditional diffusion model. The authors use a single network to parameteriza both models, where for the unconditional model they can simply input a null token $\varnothing$ for the class identifier $\mathbb c$ when predicting the score. They jointly train the unconditional and conditional models simply by randomly setting $\mathbb c$ to the unconditinal class identifier $varnothing$ with some probability $p_\text{uuncond}$, set as a hyperparameter.
+  The classfier must be trained on the noisy data so it is generally not possible to plug in a pre-trained classifier. Rather than sampling in the direction of the gradient of an image classifier, classifier-free guidance instead mixes the score estimates of a conditional diffusion model and a jointly trained unconditional diffusion model. The authors use a single network to parameteriza both models, where for the unconditional model they can simply input a null token $\varnothing$ for the class identifier $\mathbb c$ when predicting the score. They jointly train the unconditional and conditional models simply by randomly setting $\mathbb c$ to the unconditinal class identifier $\varnothing$ with some probability $p_\text{uncond}$, set as a hyperparameter.
 
   ![Figure 14. Algorithm 1 Joint training a diffusion model with classifier-free guidance.](./assets/figure14.png)
 
