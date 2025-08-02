@@ -102,6 +102,14 @@
 - **2021 arXiv(NeurIPS 2021): “Classifier‑Free Diffusion Guidance” (Ho et al.)**
 
   > [Paper](https://arxiv.org/abs/2207.12598) & [OpenReview](https://openreview.net/forum?id=qw8AKxfYbI) & [Code](https://github.com/lucidrains/classifier-free-guidance-pytorch) & [Blog](https://sander.ai/2022/05/26/guidance.html)
+
+  The classfier must be trained on the noisy data so it is generally not possible to plug in a pre-trained classifier. Rather than sampling in the direction of the gradient of an image classifier, classifier-free guidance instead mixes the score estimates of a conditional diffusion model and a jointly trained unconditional diffusion model. The authors use a single network to parameteriza both models, where for the unconditional model they can simply input a null token $\varnothing$ for the class identifier $\mathbb c$ when predicting the score. They jointly train the unconditional and conditional models simply by randomly setting $\mathbb c$ to the unconditinal class identifier $varnothing$ with some probability $p_\text{uuncond}$, set as a hyperparameter.
+
+  ![Figure 14. Algorithm 1 Joint training a diffusion model with classifier-free guidance.](./assets/figure14.png)
+
+  They then perform sampling using the linear combination of the conditional and unconditional score estimates.
+
+  ![Figure 15. Algorithm 2 Conditional sampling with classifier-free guidance.](./assets/figure15.png)
   
 ## 3. Specific Applications of Diffusion Models
 
