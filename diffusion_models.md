@@ -135,8 +135,10 @@
 
   > [Paper](https://arxiv.org/abs/2205.09991) & [Website](https://diffusion-planning.github.io/) & [Video(ICML)](https://icml.cc/virtual/2022/oral/18292) or [Video(Youtube)](https://www.youtube.com/watch?v=ViBkYHg4rPI) & [Code](https://github.com/jannerm/diffuser)
 
+  The core contribution of this work is a denoising diffusion model and its probabilistic framework for behavior generation, Diffuser, specifically designed for trajectory data, capable of predicting all time steps of the entire plan simultaneously.
+  
 - **(IJRR 2024): “Diffusion Policy: Visuomotor Policy Learning via Action Diffusion” ( et al.)**
 
   > [Paper]() & [Website]() & [Video]() & [Code]()
 
-  The core contribution of this work is a denoising diffusion model and its probabilistic framework for behavior generation, Diffuser, specifically designed for trajectory data, capable of predicting all time steps of the entire plan simultaneously.
+  
