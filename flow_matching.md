@@ -6,9 +6,8 @@
 ## 2. Core Flow Matching
 - **2022 arXiv(NeurIPS 2024 Tutorial): “Flow Matching for Generative Modeling” (Lipman et al.)**
 
-  > [Paper](https://arxiv.org/abs/2210.02747) & [Openreview](https://openreview.net/forum?id=PqvMRDCJT9t) & [Video](https://neurips.cc/virtual/2024/tutorial/99531) & [Code]()
+  > [Paper](https://arxiv.org/abs/2210.02747) & [Openreview](https://openreview.net/forum?id=PqvMRDCJT9t) & [Video](https://neurips.cc/virtual/2024/tutorial/99531)
 
-  ![Figure 1. The proposed modeling framework trained on 2-d swiss roll data.](./assets/figure1.png)
   
 ## 3. Specific Applications of Flow Matching
 ### 3.1 Image Generation and Processing
