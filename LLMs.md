@@ -1,4 +1,5 @@
 # Large Language models timeline and key papers
+[https://antoss-landscape.my.canva.site/](https://antoss-landscape.my.canva.site/)
 [Transformers, the tech behind LLMs](https://www.youtube.com/watch?v=wjZofJX0v4M) & [Attention in transformers](https://www.youtube.com/watch?v=eMlx5fFNoYc)
 ## 1. Foundational Theory and Early Pioneering Works
 - **2017 arXiv(NeurIPS 2020): “Attention Is All You Need” (Vaswani et al.)**
