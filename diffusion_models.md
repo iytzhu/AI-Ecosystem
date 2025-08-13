@@ -159,8 +159,10 @@
 
   The core contribution of this work is a denoising diffusion model and its probabilistic framework for behavior generation, Diffuser, specifically designed for trajectory data, capable of predicting all time steps of the entire plan simultaneously.
   
-- **2023 arXiv(IJRR 2024): “Diffusion Policy: Visuomotor Policy Learning via Action Diffusion” ( et al.)**
+- **2023 arXiv(IJRR 2024): “Diffusion Policy: Visuomotor Policy Learning via Action Diffusion” (Chi et al.)**
 
   > [Paper](https://arxiv.org/abs/2303.04137) & [Website](https://diffusion-policy.cs.columbia.edu/) & [Video](https://www.youtube.com/watch?v=M03sZFfW-qU) & [Code](https://github.com/real-stanford/diffusion_policy)
 
-  
+  - **2024 arXiv(ICLR 2025): “Diffusion Policy Policy Optimization” (Ren et al.)**
+
+  > [Paper](https://arxiv.org/abs/2409.00588) & [OpenReview](https://openreview.net/forum?id=mEpqHvbD2h) & [Website](https://diffusion-ppo.github.io/) & [Video]() & [Code](https://github.com/irom-princeton/dppo)
