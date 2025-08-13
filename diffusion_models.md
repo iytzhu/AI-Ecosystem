@@ -163,6 +163,10 @@
 
   > [Paper](https://arxiv.org/abs/2303.04137) & [Website](https://diffusion-policy.cs.columbia.edu/) & [Video](https://www.youtube.com/watch?v=M03sZFfW-qU) & [Code](https://github.com/real-stanford/diffusion_policy)
 
-  - **2024 arXiv(ICLR 2025): “Diffusion Policy Policy Optimization” (Ren et al.)**
+  This paper is the first to propose modeling robot vision–action policies as a conditional denoising diffusion process. The method generates high-dimensional, multimodal action sequences by learning the gradient of the action distribution (score function) and repeatedly denoising it through stochastic Langevin dynamics.
+
+- **2024 arXiv(ICLR 2025): “Diffusion Policy Policy Optimization” (Ren et al.)**
 
   > [Paper](https://arxiv.org/abs/2409.00588) & [OpenReview](https://openreview.net/forum?id=mEpqHvbD2h) & [Website](https://diffusion-ppo.github.io/) & [Video]() & [Code](https://github.com/irom-princeton/dppo)
+
+  
