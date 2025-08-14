@@ -57,7 +57,9 @@
 
   ![Figure 10. Overview of score-based generative modeling through SEDs.](./assets/figure10.png)
 
-  This paper formulates the generative process as a continuous dynamical system, where samplers are used to solve this system. The authors unify various sampling methods under the SDE framework: the reverse SDE can be solved using general-purpose SDE solvers such as Euler–Maruyama or stochastic Runge-Kutta. They propose the Predictor–Corrector (PC) sampler, which combines ancestral sampling (e.g., from DDPM) as the predictor step and Langevin MCMC (e.g., from SMLD) as the corrector step to refine the sample at each step. Additionally, they introduce the Probability Flow ODE sampler, a deterministic generative process that enables exact likelihood computation and controllable, path-consistent generation.  
+  They show it is possible to convert any SDE into an ordinary differential equation (ODE) without changing its marginal distributions. Thus by solving this ODE, they can sample from the same distributions as the reverse SDE. The corresponding ODE of an SDE is named probability flow ODE.  
+
+  The authors unify various sampling methods under the SDE framework: the reverse SDE can be solved using general-purpose SDE solvers such as Euler–Maruyama or stochastic Runge-Kutta. They propose the Predictor–Corrector (PC) sampler, which combines ancestral sampling (e.g., from DDPM) as the predictor step and Langevin MCMC (e.g., from SMLD) as the corrector step to refine the sample at each step. Additionally, they introduce the Probability Flow ODE sampler, a deterministic generative process that enables exact likelihood computation and controllable, path-consistent generation.  
 
   Finally, the paper presents a method for conditional generation by incorporating the gradient of a classifier $\nabla_{\mathbf{x}} \log p_\phi(y|\mathbf{x})$ into the reverse SDE or ODE, enabling classifier guidance to steer the generation toward desired classes.  
 
@@ -163,7 +165,9 @@
 
   > [Paper](https://arxiv.org/abs/2303.04137) & [Website](https://diffusion-policy.cs.columbia.edu/) & [Video](https://www.youtube.com/watch?v=M03sZFfW-qU) & [Code](https://github.com/real-stanford/diffusion_policy)
 
-  This paper is the first to propose modeling robot vision–action policies as a conditional denoising diffusion process. The method generates high-dimensional, multimodal action sequences by learning the gradient of the action distribution (score function) and repeatedly denoising it through stochastic Langevin dynamics.
+  The authors introduces a new form of robot visuomotor policy that generates behavior via a “conditional denoising diffusion process on robot action space”, called Diffusion Policy. Instead of directly outputting an action, the policy infers the action-score gradient, conditioned on visual observations, for K denoising iterations. 
+
+  ![Figure 21. Diffusion policy.](./assets/figure21.png)
 
 - **2024 arXiv(ICLR 2025): “Diffusion Policy Policy Optimization” (Ren et al.)**
 
