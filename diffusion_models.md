@@ -127,6 +127,15 @@
 
   > [Paper](https://arxiv.org/abs/2112.10752) & [Video](https://www.youtube.com/watch?v=-3EkERbcZns) & [Video](https://www.youtube.com/watch?v=7W4aZObNucI) & [Code](https://github.com/CompVis/latent-diffusion)
 
+  Diffusion models belong to the class of likelihood-based models, whose mode-covering behavior makes them prone to spend excessive amounts of capacity (and thus compute resources)
+on modeling imperceptible details of the data. To reduce the computational complexity for both training and sampling, the authors introduce an explicit separation of the compressive from the generative learning phase.
+
+  ![Figure 20. Illustrating perceptual and semantic compression.](./assets/figure20.png)
+
+  To achieve this, they utilize an autoencoding model which learns a space that is perceptually equivalent to the image space, but offers significantly reduced computational complexity. Conditional distributions of the form $p(z\|y)$ can be implemented with a conditional denoising autoencoder $\epsilon_\theta(z_t, t, y)$. A more flexible way is by augmenting the underlying UNet backbone with cross-attention mechanism, which is effective for learning attention-based models of various input modalities.
+
+  ![Figure 21. Condition LDMs either via concatenation or by a more general cross-attention mechanism.](./assets/figure21.png)
+  
 - **2022 arXiv: “Hierarchical Text-Conditional Image Generation with CLIP Latents” (Ramesh et al.)** (DALL·E 2)
 
   > [Paper](https://arxiv.org/abs/2204.06125) & [Website]([https://openai.com/index/dall-e-2](https://openai.com/index/dall-e-2)/) & [Video](https://www.youtube.com/watch?v=TvBjoN3zkPY) & [Code](https://github.com/lucidrains/DALLE2-pytorch)
