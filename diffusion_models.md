@@ -154,7 +154,7 @@ on modeling imperceptible details of the data. To reduce the computational compl
 
 - **2022 arXiv(ICLR 2023): “Is Conditional Generative Modeling all you need for Decision-Making?” (Ajay et al.)**
 
-  > [Paper](https://arxiv.org/abs/2211.15657) & [OpenReview](https://openreview.net/forum?id=sP1fo2K9DFG) & [Website](https://anuragajay.github.io/decision-diffuser/) & [Video](https://iclr.cc/virtual/2023/oral/12696) & [Code](https://github.com/anuragajay/decision-diffuser)
+  > [Paper](https://arxiv.org/abs/2211.15657) & [Video](https://iclr.cc/virtual/2023/oral/12696) & [Website](https://anuragajay.github.io/decision-diffuser/) & [Code](https://github.com/anuragajay/decision-diffuser)
 
   The key contribution lies in demonstrating that conditional diffusion policies can surpass traditional offline RL methods without relying on dynamic programming, while also supporting multiple constraints and skill composition.  
 
@@ -166,20 +166,26 @@ on modeling imperceptible details of the data. To reduce the computational compl
 
 - **2022 arXiv(ICML 2022): “Planning with Diffusion for Flexible Behavior Synthesis” (Janner et al.)**
 
-  > [Paper](https://arxiv.org/abs/2205.09991) & [Website](https://diffusion-planning.github.io/) & [Video(ICML)](https://icml.cc/virtual/2022/oral/18292) or [Video(Youtube)](https://www.youtube.com/watch?v=ViBkYHg4rPI) & [Code](https://github.com/jannerm/diffuser)
+  > [Paper](https://arxiv.org/abs/2205.09991) & [Video](https://icml.cc/virtual/2022/oral/18292) or [Video(Youtube)](https://www.youtube.com/watch?v=ViBkYHg4rPI) & [Code](https://github.com/jannerm/diffuser) & [Website](https://diffusion-planning.github.io/)
 
   The core contribution of this work is a denoising diffusion model and its probabilistic framework for behavior generation, Diffuser, specifically designed for trajectory data, capable of predicting all time steps of the entire plan simultaneously.
-  
+
 - **2023 arXiv(IJRR 2024): “Diffusion Policy: Visuomotor Policy Learning via Action Diffusion” (Chi et al.)**
 
-  > [Paper](https://arxiv.org/abs/2303.04137) & [Website](https://diffusion-policy.cs.columbia.edu/) & [Video](https://www.youtube.com/watch?v=M03sZFfW-qU) & [Code](https://github.com/real-stanford/diffusion_policy)
+  > [Paper](https://arxiv.org/abs/2303.04137) & [Video](https://www.youtube.com/watch?v=M03sZFfW-qU) & [Code](https://github.com/real-stanford/diffusion_policy) & [Website](https://diffusion-policy.cs.columbia.edu/)
 
   The authors introduces a new form of robot visuomotor policy that generates behavior via a “conditional denoising diffusion process on robot action space”, called Diffusion Policy. Instead of directly outputting an action, the policy infers the action-score gradient, conditioned on visual observations, for K denoising iterations. 
 
   ![Figure 21. Diffusion policy.](./assets/figure21.png)
 
+
+- **2024 arXiv(NeurIPS 2024): “DiffPhyCon: A Generative Approach to Control Complex Physical Systems” (Wei et al.)**
+    > [Paper](https://web3.arxiv.org/abs/2407.06494) & [Video](https://neurips.cc/virtual/2024/poster/95505) & [Code](https://github.com/AI4Science-WestlakeU/diffphycon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2024/10/04/DiffPhyCon-A-Generative-Approach-to-Control-Complex-Physical-Systems.html)
+
+
+- **2024 arXiv(ICLR 2025): “CL-DiffPhyCon: Closed-loop Diffusion Control of Complex Physical Systems” (Wei et al.)**
+    > [Paper](https://arxiv.org/abs/2408.03124) & [Video](https://iclr.cc/virtual/2025/poster/29738) & [Code](https://github.com/AI4Science-WestlakeU/CL_DiffPhyCon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2025/01/24/Closed-loop-Diffusion-Control-of-Complex-Physical-Systems.html) 
+
 - **2024 arXiv(ICLR 2025): “Diffusion Policy Policy Optimization” (Ren et al.)**
 
-  > [Paper](https://arxiv.org/abs/2409.00588) & [OpenReview](https://openreview.net/forum?id=mEpqHvbD2h) & [Website](https://diffusion-ppo.github.io/) & [Video]() & [Code](https://github.com/irom-princeton/dppo)
-
-  
+  > [Paper](https://arxiv.org/abs/2409.00588) & [Video](https://iclr.cc/virtual/2025/poster/28475) & [Code](https://github.com/irom-princeton/dppo) & [Website](https://diffusion-ppo.github.io/) 
