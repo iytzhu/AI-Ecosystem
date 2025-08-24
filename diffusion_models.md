@@ -176,8 +176,9 @@ on modeling imperceptible details of the data. To reduce the computational compl
 
   The authors introduces a new form of robot visuomotor policy that generates behavior via a “conditional denoising diffusion process on robot action space”, called Diffusion Policy. Instead of directly outputting an action, the policy infers the action-score gradient, conditioned on visual observations, for K denoising iterations. 
 
-  ![Figure 21. Diffusion policy.](./assets/figure21.png)
+  ![Figure 21. Policy Representations.](./assets/Policy_Representations.png)
 
+  ![Figure 22. Diffusion policy Overview.](./assets/Diffusion_Policy_Overview.png)
 
 - **2024 arXiv(NeurIPS 2024): “DiffPhyCon: A Generative Approach to Control Complex Physical Systems” (Wei et al.)**
     > [Paper](https://web3.arxiv.org/abs/2407.06494) & [Video](https://neurips.cc/virtual/2024/poster/95505) & [Code](https://github.com/AI4Science-WestlakeU/diffphycon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2024/10/04/DiffPhyCon-A-Generative-Approach-to-Control-Complex-Physical-Systems.html)
