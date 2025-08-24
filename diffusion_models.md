@@ -189,3 +189,12 @@ on modeling imperceptible details of the data. To reduce the computational compl
 - **2024 arXiv(ICLR 2025): “Diffusion Policy Policy Optimization” (Ren et al.)**
 
   > [Paper](https://arxiv.org/abs/2409.00588) & [Video](https://iclr.cc/virtual/2025/poster/28475) & [Code](https://github.com/irom-princeton/dppo) & [Website](https://diffusion-ppo.github.io/) 
+
+- **2025 arXiv(ICLR 2025): “Diffuse-CLoC: Guided Diffusion for Physics-based Character Look-ahead Control” (Huang et al.)**
+  > [Paper](https://arxiv.org/abs/2503.11801) & [Video]() & [Code](https://www.youtube.com/watch?v=iTYs83WtGB4) & [Website](https://diffusecloc.github.io/website/) 
+
+  ![Figure 24. Diffuse-CLoC's 3 stages.](./assets/Diffuse-CLoC's 3 stages.png)
+
+  **The same pre-trained diffusion model with different guidance techniques**: During training, they randomly sample time steps for state and action denoising independently, ensuring varied noise levels across trajectories. The model learns to denoise by predicting clean trajectories through mean squared error loss minimization. Next, during inference time conditioning, they use classifier guidance to complete novel downstreanm tasks. For each diffusion step, they input the noisy trajectory at step K into the model to predict both the clean trajectory and the noise. Then compute task specific costs and gradients based on predicted states and environmental information. These gradients modify the predicted noise to determine the next denoising steps mean from which they sample the next noisy trajectory iteratively.
+
+  ![Figure 25. Framework of Diffuse-CLoC.](./assets/Framework of Diffuse-CLoC.png)
