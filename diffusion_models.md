@@ -1,4 +1,6 @@
-# diffusion‑model timeline and key papers
+# Diffusion Model Timeline and Key Papers
+
+Diffusion models are powerful generative frameworks capable of sampling from complex data distributions by effectively learning the reverse of a noise-injection process. This makes them exceptionally capable in tasks requiring distribution matching—such as image synthesis, text generation, and creative content production.
 
 ## 1. Foundational Theory and Early Pioneering Works (2015–2019)
 
@@ -10,7 +12,7 @@
 
   ![Figure 1. The proposed modeling framework trained on 2-d swiss roll data.](./assets/figure1.png)
   
-  **Derivation of the Evidence Lower Bound (ELBO)**: Converting likelihood maximization into log‑likelihood maximization $\mathcal L=\mathbb{E}_{q(x^{(0)})}[\log p(x^{(0)})]$, so that Jensen’s inequality can turn $\log\int$ into a computable lower bound of $\int\log$, then splitting that bound across time steps so that each term is a KL divergence.  
+   **Derivation of the Evidence Lower Bound (ELBO)**: Converting likelihood maximization into log‑likelihood maximization $\mathcal L=\mathbb{E}_{q(x^{(0)})}[\log p(x^{(0)})]$, so that Jensen’s inequality can turn $\log\int$ into a computable lower bound of $\int\log$, then splitting that bound across time steps so that each term is a KL divergence.  
 
    **Optimization objective & training**: By treating each reverse diffusion kernel as a parametric model, the core training objective becomes finding the optimal parameters of mean and covariance functions of each step’s reverse kernel that maximize this log‑likelihood bound, which is equivalent to simultaneously minimizing the KL divergence between the reverse kernel at each step and the true posterior. In this way, estimating a complex distribution reduces to predicting the parameters needed for each reverse diffusion step.
 
@@ -151,6 +153,10 @@ on modeling imperceptible details of the data. To reduce the computational compl
   > [Paper](https://arxiv.org/abs/2005.14165)
 
 ### 3.3 Physical Control System
+- **2021 arXiv(NeurIPS 2021): “CSDI: Conditional Score-based Diffusion Models for Probabilistic Tiem Seris Impution” (Tashiro et al.)**
+
+  > [Paper](https://arxiv.org/abs/2107.03502) & [OpenReview](https://openreview.net/forum?id=VzuIzbRDrum) & [Video]() & [Code](https://github.com/ermongroup/CSDI)
+  
 
 - **2022 arXiv(ICLR 2023): “Is Conditional Generative Modeling all you need for Decision-Making?” (Ajay et al.)**
 
@@ -169,6 +175,20 @@ on modeling imperceptible details of the data. To reduce the computational compl
   > [Paper](https://arxiv.org/abs/2205.09991) & [Video](https://icml.cc/virtual/2022/oral/18292) or [Video(Youtube)](https://www.youtube.com/watch?v=ViBkYHg4rPI) & [Code](https://github.com/jannerm/diffuser) & [Website](https://diffusion-planning.github.io/)
 
   The core contribution of this work is a denoising diffusion model and its probabilistic framework for behavior generation, Diffuser, specifically designed for trajectory data, capable of predicting all time steps of the entire plan simultaneously.
+
+- **ICML 2023: “Loss-Guided Diffusion Models for Plug-and-Play Controllable Generation” (Song et al.)**
+
+  > [Paper](https://icml.cc/virtual/2023/poster/24571) 
+  
+  As long as we can compute the loss $\ell_y(\hat{x}\_t)$ and its gradient $\nabla_{\hat{x}\_t}\ell_y$ on the predicted denoised sample $\hat{x}_t$ at each step, we can provide a guidance direction for the current sampling state $x_t$ at any time $t$.
+
+  The diffusion model’s denoising process gradually removes noise from $x_T$ toward $x_0$. At each step, given the current $x_t$, the diffusion model can predict the corresponding “clean” sample $\hat{x}_t \approx \mathbb{E}[x_0 \mid x_t]$, which is the MMSE point estimate. Once we have $\hat{x}_t$, we can:
+
+  * **Compute $\ell_y(\hat{x}_t)$:** measure how well it matches the condition $y$;
+  * **Compute the gradient $\nabla_{\hat{x}_t}\ell_y$:** indicate how to move $\hat{x}_t$ to better satisfy the condition;
+  * **Backpropagate this gradient to $x_t$:** steer the diffusion model’s sampling direction.
+
+  So where does the guidance direction come from? In practice we compute $\nabla_{x_t}\ell_y(\hat{x}_t(x_t)) = \frac{\partial \hat{x}_t}{\partial x_t}^\top \,\nabla\_{\hat{x}_t}\ell_y$, where $\frac{\partial \hat{x}_t}{\partial x_t}$ is the Jacobian (the gradient pathway) obtained by backpropagating through the diffusion model’s prediction network. In this way, the loss defined on $\hat{x}_t$ is “pulled back” to the current state $x_t$, causing the sampling trajectory to progressively move toward the desired condition.
 
 - **2023 arXiv(IJRR 2024): “Diffusion Policy: Visuomotor Policy Learning via Action Diffusion” (Chi et al.)**
 
