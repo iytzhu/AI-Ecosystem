@@ -157,7 +157,7 @@ on modeling imperceptible details of the data. To reduce the computational compl
 
   > [Paper](https://arxiv.org/abs/2107.03502) & [OpenReview](https://openreview.net/forum?id=VzuIzbRDrum) & [Video]() & [Code](https://github.com/ermongroup/CSDI)
   
-
+  
 - **2022 arXiv(ICLR 2023): “Is Conditional Generative Modeling all you need for Decision-Making?” (Ajay et al.)**
 
   > [Paper](https://arxiv.org/abs/2211.15657) & [Video](https://iclr.cc/virtual/2023/oral/12696) & [Website](https://anuragajay.github.io/decision-diffuser/) & [Code](https://github.com/anuragajay/decision-diffuser)
@@ -199,6 +199,13 @@ on modeling imperceptible details of the data. To reduce the computational compl
   ![Figure 21. Policy Representations.](./assets/Policy_Representations.png)
 
   ![Figure 22. Diffusion policy Overview.](./assets/Diffusion_Policy_Overview.png)
+
+- **2023 arXiv(NeurIPS 2024): “TSGM: A Flexible Framework for Generative Modeling of Synthetic Time Series” (Nikitin et al.)**
+
+  > [Paper](https://arxiv.org/abs/2305.11567) & [Video](https://neurips.cc/virtual/2024/poster/97532) & [Code](https://github.com/AlexanderVNikitin/tsgm) & [Website](https://tsgm.readthedocs.io/en/latest/)
+
+  This is a work to study the time series generation problem based on the diffusion method. The TSGM architecture includes three components: an encoder, a decoder and a conditional score-matching
+network. The pre-trained encoder is used to embed the underlying time series into a latent space. The conditional score-matching network is used to sample the hidden states, which are then converted to the time series samples via the decoder.
 
 - **2024 arXiv(NeurIPS 2024): “DiffPhyCon: A Generative Approach to Control Complex Physical Systems” (Wei et al.)**
     > [Paper](https://web3.arxiv.org/abs/2407.06494) & [Video](https://neurips.cc/virtual/2024/poster/95505) & [Code](https://github.com/AI4Science-WestlakeU/diffphycon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2024/10/04/DiffPhyCon-A-Generative-Approach-to-Control-Complex-Physical-Systems.html)
