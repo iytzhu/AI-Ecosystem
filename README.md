@@ -35,8 +35,10 @@ Diffusion models are powerful generative frameworks capable of sampling from com
     * [Loss-Guided Diffusion (ICML 2023)](#loss-guided-diffusion-icml-2023)
     * [Diffusion Policy (Chi et al.)](#diffusion-policy-chi-et-al)
     * [TSGM (Nikitin et al.)](#tsgm-nikitin-et-al)
-    * [DiffPhyCon & follow-ups (Wei et al., Ren et al., Huang et al.)](#diffphycon--follow-ups)
-
+    * [DiffPhyCon (Wei et al.)](#diffphycon-wei-et-al)
+    * [CL-DiffPhyCon (Wei et al.)](#cl-diffphycon-wei-et-al)
+    * [DPPO (Ren et al.)](#dppo-ren-et-al)
+    * [Diffuse-CLoC (Huang et al.)](#diffuse-cloc-huang-et-al)
 ---
 
 <a id="introduction"></a>
@@ -306,25 +308,29 @@ Diffusion models are powerful generative frameworks capable of sampling from com
 
   This is a work to study the time series generation problem based on the diffusion method. The TSGM architecture includes three components: an encoder, a decoder and a conditional score-matching network. The pre-trained encoder is used to embed the underlying time series into a latent space. The conditional score-matching network is used to sample the hidden states, which are then converted to the time series samples via the decoder.
 
-<a id="diffphycon--follow-ups"></a>
+<a id="diffphycon-wei-et-al"></a>
 
-* **2024–2025 Follow-ups (DiffPhyCon, CL-DiffPhyCon, DPPO, Diffuse-CLoC)**
+* **2024 arXiv (NeurIPS 2024): “DiffPhyCon: A Generative Approach to Control Complex Physical Systems” (Wei et al.)**
 
-  * **2024 arXiv (NeurIPS 2024): “DiffPhyCon: A Generative Approach to Control Complex Physical Systems” (Wei et al.)**
+  > [Paper](https://web3.arxiv.org/abs/2407.06494) & [Video](https://neurips.cc/virtual/2024/poster/95505) & [Code](https://github.com/AI4Science-WestlakeU/diffphycon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2024/10/04/DiffPhyCon-A-Generative-Approach-to-Control-Complex-Physical-Systems.html)
 
-    > [Paper](https://web3.arxiv.org/abs/2407.06494) & [Video](https://neurips.cc/virtual/2024/poster/95505) & [Code](https://github.com/AI4Science-WestlakeU/diffphycon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2024/10/04/DiffPhyCon-A-Generative-Approach-to-Control-Complex-Physical-Systems.html)
+<a id="cl-diffphycon-wei-et-al"></a>
 
-  * **2024 arXiv (ICLR 2025): “CL-DiffPhyCon: Closed-loop Diffusion Control of Complex Physical Systems” (Wei et al.)**
+* **2024 arXiv (ICLR 2025): “CL-DiffPhyCon: Closed-loop Diffusion Control of Complex Physical Systems” (Wei et al.)**
 
-    > [Paper](https://arxiv.org/abs/2408.03124) & [Video](https://iclr.cc/virtual/2025/poster/29738) & [Code](https://github.com/AI4Science-WestlakeU/CL_DiffPhyCon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2025/01/24/Closed-loop-Diffusion-Control-of-Complex-Physical-Systems.html)
+  > [Paper](https://arxiv.org/abs/2408.03124) & [Video](https://iclr.cc/virtual/2025/poster/29738) & [Code](https://github.com/AI4Science-WestlakeU/CL_DiffPhyCon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2025/01/24/Closed-loop-Diffusion-Control-of-Complex-Physical-Systems.html)
 
-  * **2024 arXiv (ICLR 2025): “Diffusion Policy Policy Optimization” (Ren et al.)**
+<a id="dppo-ren-et-al"></a>
 
-    > [Paper](https://arxiv.org/abs/2409.00588) & [Video](https://iclr.cc/virtual/2025/poster/28475) & [Code](https://github.com/irom-princeton/dppo) & [Website](https://diffusion-ppo.github.io/)
+* **2024 arXiv (ICLR 2025): “Diffusion Policy Policy Optimization” (Ren et al.)**
 
-  * **2025 arXiv (ICLR 2025): “Diffuse-CLoC: Guided Diffusion for Physics-based Character Look-ahead Control” (Huang et al.)**
+  > [Paper](https://arxiv.org/abs/2409.00588) & [Video](https://iclr.cc/virtual/2025/poster/28475) & [Code](https://github.com/irom-princeton/dppo) & [Website](https://diffusion-ppo.github.io/)
 
-    > [Paper](https://arxiv.org/abs/2503.11801) & [Video]() & [Code](https://www.youtube.com/watch?v=iTYs83WtGB4) & [Website](https://diffusecloc.github.io/website/)
+<a id="diffuse-cloc-huang-et-al"></a>
+
+* **2025 arXiv (ICLR 2025): “Diffuse-CLoC: Guided Diffusion for Physics-based Character Look-ahead Control” (Huang et al.)**
+
+  > [Paper](https://arxiv.org/abs/2503.11801) & [Video]() & [Code](https://www.youtube.com/watch?v=iTYs83WtGB4) & [Website](https://diffusecloc.github.io/website/)
 
   ![Figure 24. Diffuse-CLoC's 3 stages.](./assets/Diffuse-CLoC's_3_stages.png)
 
