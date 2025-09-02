@@ -353,4 +353,10 @@ Diffusion models are powerful generative frameworks capable of sampling from com
 
   ![Figure 26. Framework of Unet.](./assets/Framework_of_Unet.png)
 
-  
+  U-Net 的两个路径分别是：**收缩路径**（contraction path / encoder）和**扩展路径**（expansion path / decoder）。它们的职责互补：前者负责 “**Increase the What, reduce the where**”，逐步抽取语义特征并扩大感受野，后者负责 “**Create high-resolution segmentation map**”，逐步恢复空间分辨率以实现像素级分割。两者通过**跳跃连接**（skip connections）在相同尺度处拼接特征，保证高层语义与低层空间细节同时被利用。
+
+  具体地，
+  - 横向看，每一层，层内**无填充**卷积：2 × (Conv3×3 → ReLU)，对应 `H×W` → `(H-2)×(W-2)` → `(H-4)×(W-4)`；跳跃连接**拼接**（Concatenate）相同 level 的层，把上采样得到的特征与 encoder 中相同尺度的特征在通道方向拼接 `concat([up_feat, enc_feat])`，注意对 encoder 特征做**中心裁剪**（center-crop）以匹配上采样后的尺寸，通道数变成 `C_up + C_enc`；
+  - 纵向看，从上往下是**下采样**（Downsample，通常是 MaxPool 2×2），下采样对应输入尺寸减半 `H×W` → `H/2 × W/2`，但道数增大，`64`→`128`；从下往上是**上采样/上卷积**（Up-convolution），通常是 2×2 up-convolution，空间尺寸：`H/2 × W/2` → `H × W`，通道数减半。
+
+  > **为避免裁剪麻烦**：实现时使用 `padding=1`（same convs），这样空间维度在 conv 后保持不变，不需要裁剪，代码更简洁。
