@@ -1,9 +1,5 @@
 # Diffusion Model Timeline and Key Papers
 
-Diffusion models are powerful generative frameworks capable of sampling from complex data distributions by effectively learning the reverse of a noise-injection process. This makes them exceptionally capable in tasks requiring distribution matching—such as image synthesis, text generation, and creative content production.
-
----
-
 ## Table of Contents
 
 * [Introduction](#introduction)
@@ -48,7 +44,7 @@ Diffusion models are powerful generative frameworks capable of sampling from com
 
 ## Introduction
 
-Diffusion models are powerful generative frameworks capable of sampling from complex data distributions by effectively learning the reverse of a noise-injection process. This makes them exceptionally capable in tasks requiring distribution matching—such as image synthesis, text generation, and creative content production.
+扩散模型是一类强大的生成式框架，它们通过学习噪声注入过程的逆过程来从复杂的数据分布中采样。这使得它们在需要分布匹配的任务上表现得尤为出色——例如文本生成、图像合成、音频/音乐生成、视频生成与预测、分子设计与药物发现、逆问题与重建、数据增强与去噪等。
 
 ---
 
@@ -62,13 +58,15 @@ Diffusion models are powerful generative frameworks capable of sampling from com
 
   > [Paper](https://arxiv.org/abs/1503.03585) & [Video](https://www.youtube.com/watch?v=XLzhbXeK-Os) & [Code](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/tree/master)
 
-  The authors first propose a diffusion-model framework. Inspired by non-equilibrium statistical physics, they define a forward diffusion process which converts any complex data distribution into a simple, analytically tractable distribution (such as a zero-mean, unit-covariance Gaussian) and then trains a neural network to learn a finite-time reversal of this diffusion process which defines generative model distribution.
+  作者首先提出了一个扩散模型框架。受非平衡统计物理的启发，他们定义了一个前向扩散过程，将任意复杂的数据分布转换为一个简单且解析可处理的分布（例如零均值、单位协方差的高斯分布），然后训练一个神经网络去学习该扩散过程在有限时间内的逆过程，该逆过程定义了生成模型的分布。
 
   ![Figure 1. The proposed modeling framework trained on 2-d swiss roll data.](./assets/figure1.png)
 
-  **Derivation of the Evidence Lower Bound (ELBO)**: Converting likelihood maximization into log-likelihood maximization \$\mathcal L=\mathbb{E}\_{q(x^{(0)})}\[\log p(x^{(0)})]\$, so that Jensen’s inequality can turn \$\log\int\$ into a computable lower bound of \$\int\log\$, then splitting that bound across time steps so that each term is a KL divergence.
+  **证据下界（ELBO）的推导**：将似然最大化转换为对数似然最大化 \$\mathcal L=\mathbb{E}\_{q(x^{(0)})}\[\log p(x^{(0)})]\$，以便利用詹森不等式将\$\log\int\$ 转换为可计算的 \$\int\log\$ 的下界，然后将该下界按时间步分解，使得每一项都成为一个 KL 散度。
 
-  **Optimization objective & training**: By treating each reverse diffusion kernel as a parametric model, the core training objective becomes finding the optimal parameters of mean and covariance functions of each step’s reverse kernel that maximize this log-likelihood bound, which is equivalent to simultaneously minimizing the KL divergence between the reverse kernel at each step and the true posterior. In this way, estimating a complex distribution reduces to predicting the parameters needed for each reverse diffusion step.
+  **优化目标与训练**：通过将每个逆向扩散核视为一个参数化模型，核心训练目标就变为寻找每一步逆向核的均值和协方差函数的最优参数，以最大化该对数似然下界。这等价于同时最小化每一步逆向核与真实后验之间的 KL 散度。这样，估计一个复杂分布的问题就简化为预测每个逆向扩散步骤所需的参数。
+
+  > 把生成问题转化为对前向扩散逆过程的学习，相比直接建模数据分布有如下优势：训练稳定性、明确化的训练目标（ELBO）、可控采样过程、与物理直觉的联系。
 
 <a id="2019—y-song--e-ermon-score-based-generative-modeling--ncsn"></a>
 
