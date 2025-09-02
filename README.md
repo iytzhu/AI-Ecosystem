@@ -7,11 +7,11 @@ Diffusion models are powerful generative frameworks capable of sampling from com
 ## Table of Contents
 
 * [Introduction](#introduction)
-* [1. Foundational Theory and Early Pioneering Works (2015–2019)](#1-foundational-theory-and-early-pioneering-works-2015–2019)
+* [1 Foundational Theory and Early Pioneering Works (2015–2019)](#1-foundational-theory-and-early-pioneering-works-2015–2019)
 
   * [2015 — Sohl-Dickstein et al. (Deep Unsupervised Learning using Nonequilibrium Thermodynamics)](#2015—sohl-dickstein-et-al-deep-unsupervised-learning-using-nonequilibrium-thermodynamics)
   * [2019 — Y. Song & E. Ermon (Score-based generative modeling / NCSN)](#2019—y-song--e-ermon-score-based-generative-modeling--ncsn)
-* [2. Core Diffusion Models (2020–2021)](#2-core-diffusion-models-2020–2021)
+* [2 Core Diffusion Models (2020–2021)](#2-core-diffusion-models-2020–2021)
 
   * [2020 — Ho et al. (DDPM)](#2020—ho-et-al-denoising-diffusion-probabilistic-models)
   * [2020 — Song et al. (Score-Based Generative Modeling through SDEs)](#2020—song-et-al-score-based-generative-modeling-through-sdes)
@@ -19,7 +19,7 @@ Diffusion models are powerful generative frameworks capable of sampling from com
   * [2021 — Nichol & Dhariwal (Improved DDPM)](#2021—nichol--dhariwal-improved-denoising-diffusion-probabilistic-models)
   * [2021 — Dhariwal & Nichol (Diffusion Models Beat GANs)](#2021—dhariwal--nichol-diffusion-models-beat-gans-on-image-synthesis)
   * [2021 — Ho et al. (Classifier-Free Guidance)](#2021—ho-et-al-classifier-free-diffusion-guidance)
-* [3. Specific Applications of Diffusion Models](#3-specific-applications-of-diffusion-models)
+* [3 Specific Applications of Diffusion Models](#3-specific-applications-of-diffusion-models)
 
   * [3.1 Image Generation from Text Descriptions](#31-image-generation-from-text-descriptions)
 
@@ -39,8 +39,11 @@ Diffusion models are powerful generative frameworks capable of sampling from com
     * [CL-DiffPhyCon (Wei et al.)](#cl-diffphycon-wei-et-al)
     * [DPPO (Ren et al.)](#dppo-ren-et-al)
     * [Diffuse-CLoC (Huang et al.)](#diffuse-cloc-huang-et-al)
----
+* [Appendix](#Appendix)
+  * [Unet](#unet)
 
+---
+  
 <a id="introduction"></a>
 
 ## Introduction
@@ -337,3 +340,17 @@ Diffusion models are powerful generative frameworks capable of sampling from com
   **The same pre-trained diffusion model with different guidance techniques**: During training, they randomly sample time steps for state and action denoising independently, ensuring varied noise levels across trajectories. The model learns to denoise by predicting clean trajectories through mean squared error loss minimization. Next, during inference time conditioning, they use classifier guidance to complete novel downstream tasks. For each diffusion step, they input the noisy trajectory at step K into the model to predict both the clean trajectory and the noise. Then compute task specific costs and gradients based on predicted states and environmental information. These gradients modify the predicted noise to determine the next denoising steps mean from which they sample the next noisy trajectory iteratively.
 
   ![Figure 25. Framework of Diffuse-CLoC.](./assets/Framework_of_Diffuse-CLoC.png)
+
+<a id="Appendix"></a>
+
+## Appendix
+
+<a id="unet"></a>
+
+* **2015 arXiv (MICCAI 2015): “U-Net: Convolutional Networks for Biomedical Image Segmentation” (Ronneberger et al.)**
+
+  > [Paper](https://arxiv.org/abs/1505.04597) & [Video](https://www.youtube.com/watch?v=81AvQQnpG4Q) & [Talk](https://www.youtube.com/watch?v=UahLCWtJEq8) & [Code](https://github.com/milesial/Pytorch-UNet) & [Website](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net)
+
+  ![Figure 26. Framework of Unet.](./assets/Framework_of_Unet.png)
+
+  
