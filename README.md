@@ -62,7 +62,7 @@
 
   ![Figure 1. The proposed modeling framework trained on 2-d swiss roll data.](./assets/figure1.png)
 
-  **证据下界（ELBO）的推导**：将似然最大化转换为对数似然最大化 \$\mathcal L=\mathbb{E}\_{q(x^{(0)})}\[\log p(x^{(0)})]\$，以便利用詹森不等式将\$\log\int\$ 转换为可计算的 \$\int\log\$ 的下界，然后将该下界按时间步分解，使得每一项都成为一个 KL 散度。
+  **证据下界（ELBO）的推导**：将似然最大化转换为对数似然最大化 $\mathcal L=\mathbb{E}\_{q(x^{(0)})}\[\log p(x^{(0)})]$，以便利用詹森不等式将 $\log\int$ 转换为可计算的 $\int\log$ 的下界，然后将该下界按时间步分解，使得每一项都成为一个 KL 散度。
 
   **优化目标与训练**：通过将每个逆向扩散核视为一个参数化模型，核心训练目标就变为寻找每一步逆向核的均值和协方差函数的最优参数，以最大化该对数似然下界。这等价于同时最小化每一步逆向核与真实后验之间的 KL 散度。这样，估计一个复杂分布的问题就简化为预测每个逆向扩散步骤所需的参数。
 
@@ -74,17 +74,18 @@
 
   > [Paper](https://arxiv.org/abs/1907.05600) & [Blog](http://yang-song.net/blog/2021/score/) & [Video](https://www.youtube.com/watch?v=8TcNXi3A5DI) & [Code](https://github.com/ermongroup/ncsn) & [Summary Video](https://www.youtube.com/watch?v=wMmqCMwuM2Q)
 
-  The authors propose the framework of score-based generative modeling where they first estimate gradient of data log-density, \$\nabla\_x \log p\_{\rm data}(x)\$, via score matching, and then generate samples by iteratively taking small steps in the direction of this learned score while injecting noise via Langevin dynamics. In this way, random noise “climbs” up the learned log-density landscape into high-probability regions, producing realistic new samples.
+  作者提出了一种基于 score 的生成建模框架。在该框架中，他们首先通过 score matching 来估计数据对数密度的梯度 $\nabla\_x \log p\_{\rm data}(x)$，然后在采样阶段利用 Langevin 动力学：在每次迭代中沿着所学得的 score 方向迈出小步，同时注入噪声。通过这种方式，随机噪声会在学习到的对数密度景观上逐步“爬升”到高概率区域，从而生成逼真的新样本。
 
   ![Figure 2. The proposed score-based modeling framework with score matching and Langevin dynamics.](./assets/figure2.png)
 
-  **Working with score functions**: Unlike the statistical score function, the score in score matching is the gradient with respect to the input \$x\$, not the gradient with respect to the model parameters \$\theta\$. Here, the score function is the vector field that gives the direction where the density function grows most quickly.
+  **关于 score 函数的说明**：与统计学中常见的 score 函数不同，score matching 中的 score 是对输入 $x$ 的梯度，而不是对模型参数 $\theta$ 的梯度。在这里，score 函数是一个向量场，指示了密度函数增长最快的方向。
 
-  **The key idea of score-based modeling framework**: Note that Langevin dynamics can produce samples from a probability density \$p(\mathbb x)\$ using only the score function \$\nabla\_{\mathbb x} \log p(\mathbb x)\$. In order to obtain samples from \$p\_\text{data}(\mathbb x)\$, first train score network such that \$\mathbb s\_\theta(\mathbb x) \approx \nabla\_x \log p\_\text{data}(\mathbb x)\$ and then approximately obtain samples with Langevin dynamics using \$\mathbb s\_\theta(\mathbb x)\$.
+  **基于 score 的建模框架的核心思想**：Langevin 动力学仅依赖于 score 函数 $\nabla\_{\mathbb x} \log p(\mathbb x)$，即可从某个概率密度 $p(\mathbb x)$ 中生成样本。为了从数据分布 $p\_\text{data}(\mathbb x)$中获得样本，需要首先训练一个 score 网络，使得 $\mathbb s\_\theta(\mathbb x) \approx \nabla\_x \log p\_\text{data}(\mathbb x)$，然后使用 $\mathbb s\_\theta(\mathbb x)$ 在 Langevin 动力学中近似采样。
 
   ![Figure 3. The improved score-based modeling framework with denosing score matching and annealed Langevin dynamics.](./assets/figure3.png)
 
-  **Improved score-based generative modeling**: Based on the observation that perturbing data with random Gaussian noise makes the distribution more amenable to score-based generative modeling, first corrupt the data at multiple noise levels and then train a Noise Conditional Score Network (NCSN), \$s\_\theta(x,\sigma)\approx\nabla\_x\log q\_\sigma(x)\$ to jointly estimate the scores for all noise scales. This network combines a U-Net architecture with dilated convolutions and employs instance normalization. Once the NCSN \$s\_\theta(x,\sigma)\$ is trained, inspired by simulated annealing and annealed importance sampling, they propose a sampling procedure—annealed Langevin dynamics, because the rough intuition is they hope to gradually anneal down the temperature of their data density to gradually reduce the noise level.
+  **改进的基于 score 的生成建模**：研究者观察到，用高斯噪声扰动数据会让分布更适合基于 score 的生成建模。因此，他们在多个噪声水平上对数据进行破坏，然后训练一个噪声条件 score 网络（NCSN），即
+$s\_\theta(x,\sigma)\approx\nabla\_x\log q\_\sigma(x)$ 以同时估计所有噪声尺度下的 score。该网络采用了 U-Net 架构，结合了 空洞卷积（dilated convolution），并使用 instance normalization。在训练好 NCSN $s\_\theta(x,\sigma)$ 后，作者受到模拟退火与退火重要性采样的启发，提出了一种新的采样过程——退火 Langevin 动力学。直观上，他们希望逐步降低数据分布的“温度”，以逐渐减小噪声水平。
 
 ---
 
