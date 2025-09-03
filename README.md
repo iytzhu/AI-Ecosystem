@@ -359,3 +359,18 @@ $s\_\theta(x,\sigma)\approx\nabla\_x\log q\_\sigma(x)$ 以同时估计所有噪�
   - 纵向看，从上往下是**下采样**（Downsample，通常是 MaxPool 2×2），下采样对应输入尺寸减半 `H×W` → `H/2 × W/2`，但道数增大，`64`→`128`；从下往上是**上采样/上卷积**（Up-convolution），通常是 2×2 up-convolution，空间尺寸：`H/2 × W/2` → `H × W`，通道数减半。
 
   > **为避免裁剪麻烦**：实现时使用 `padding=1`（same convs），这样空间维度在 conv 后保持不变，不需要裁剪，代码更简洁。
+
+* **2022 arXiv: “Convolution, aggregation and attention based deep neural networks for accelerating simulations in mechanics” (Deshpande et al.)**
+  > [Paper](https://arxiv.org/abs/2212.01386)
+  
+  Perceiver IO结构设计了一个“跨注意力瓶颈”，将任意模态（如外力、位移）的输入通过 cross-attention 映射到一个固定尺寸的 latent 表征，再通过自注意力处理、再 cross-attention 解码到输出。这一机制允许不同“通道”（物理量）被混合建模，并处理非规则网格或高维系统，常用于仿真和力学系统建模。
+  
+* **“MCAF-Net: Multi-Channel Temporal Cross-Attention Network with Dynamic Gating for Sleep Stage Classification” (Xu et al.)**
+  > [Paper]()
+
+  尽管这是生理信号（EEG）任务，但很类似物理系统多通道观测。MCAF-Net 使用动态门控的跨通道多头注意力，在多个 EEG 通道之间建模相互关系（通道间依赖），这正是跨通道注意力的典型使用场景。
+
+* **“Spatially-Aware Diffusion Models with Cross-Attention for Global Field Reconstruction with Sparse Observations” (Zhuang et al.)**
+  > [Paper](https://arxiv.org/abs/2409.00230)
+
+  这类模型使用 cross-attention 将“观测传感器位置/数值”作为条件信息，跨 token（例如时间或空间位置）与主图像或物理场特征进行融合。这是一种跨通道或跨模态的注意力形式，常用于 PDE 场重建和流体模拟。
