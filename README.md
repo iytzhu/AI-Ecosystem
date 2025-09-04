@@ -42,7 +42,7 @@
   
 <a id="introduction"></a>
 
-## Introduction
+# Introduction
 
 扩散模型是一类强大的生成式框架，它们通过学习噪声注入过程的逆过程来从复杂的数据分布中采样。这使得它们在需要分布匹配的任务上表现得尤为出色——例如文本生成、图像合成、音频/音乐生成、视频生成与预测、分子设计与药物发现、逆问题与重建、数据增强与去噪等。
 
@@ -50,68 +50,105 @@
 
 <a id="1-foundational-theory-and-early-pioneering-works-2015–2019"></a>
 
-## 1. Foundational Theory and Early Pioneering Works (2015–2019)
+# 1. Foundational Theory and Early Pioneering Works (2015–2019)
 
 <a id="2015—sohl-dickstein-et-al-deep-unsupervised-learning-using-nonequilibrium-thermodynamics"></a>
 
-* **2015 arXiv (ICML 2015): “Deep Unsupervised Learning using Nonequilibrium Thermodynamics” (Sohl-Dickstein et al.)**
+## **2015 arXiv (ICML 2015): “Deep Unsupervised Learning using Nonequilibrium Thermodynamics” (Sohl-Dickstein et al.)**
 
-  > [Paper](https://arxiv.org/abs/1503.03585) & [Video](https://www.youtube.com/watch?v=XLzhbXeK-Os) & [Code](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/tree/master)
+> [Paper](https://arxiv.org/abs/1503.03585) & [Video](https://www.youtube.com/watch?v=XLzhbXeK-Os) & [Code](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/tree/master)
 
-  作者首先提出了一个扩散模型框架。受非平衡统计物理的启发，他们定义了一个前向扩散过程，将任意复杂的数据分布转换为一个简单且解析可处理的分布（例如零均值、单位协方差的高斯分布），然后训练一个神经网络去学习该扩散过程在有限时间内的逆过程，该逆过程定义了生成模型的分布。
+作者首先提出了一个扩散模型框架。受非平衡统计物理的启发，他们定义了一个前向扩散过程，将任意复杂的数据分布转换为一个简单且解析可处理的分布（例如零均值、单位协方差的高斯分布），然后训练一个神经网络去学习该扩散过程在有限时间内的逆过程，该逆过程定义了生成模型的分布。
 
-  ![Figure 1. The proposed modeling framework trained on 2-d swiss roll data.](./assets/figure1.png)
+![Figure 1. The proposed modeling framework trained on 2-d swiss roll data.](./assets/figure1.png)
 
-  **证据下界（ELBO）的推导**：将似然最大化转换为对数似然最大化 $\mathcal L=\mathbb{E}\_{q(x^{(0)})}\[\log p(x^{(0)})]$，以便利用詹森不等式将 $\log\int$ 转换为可计算的 $\int\log$ 的下界，然后将该下界按时间步分解，使得每一项都成为一个 KL 散度。
+**证据下界（ELBO）的推导**：将似然最大化转换为对数似然最大化 $\mathcal L=\mathbb{E}\_{q(x^{(0)})}\[\log p(x^{(0)})]$，以便利用詹森不等式将 $\log\int$ 转换为可计算的 $\int\log$ 的下界，然后将该下界按时间步分解，使得每一项都成为一个 KL 散度。
 
-  **优化目标与训练**：通过将每个逆向扩散核视为一个参数化模型，核心训练目标就变为寻找每一步逆向核的均值和协方差函数的最优参数，以最大化该对数似然下界。这等价于同时最小化每一步逆向核与真实后验之间的 KL 散度。这样，估计一个复杂分布的问题就简化为预测每个逆向扩散步骤所需的参数。
+**优化目标与训练**：通过将每个逆向扩散核视为一个参数化模型，核心训练目标就变为寻找每一步逆向核的均值和协方差函数的最优参数，以最大化该对数似然下界。这等价于同时最小化每一步逆向核与真实后验之间的 KL 散度。这样，估计一个复杂分布的问题就简化为预测每个逆向扩散步骤所需的参数。
 
-  > 把生成问题转化为对前向扩散逆过程的学习，相比直接建模数据分布有如下优势：训练稳定性、明确化的训练目标（ELBO）、可控采样过程、与物理直觉的联系。
+> 把生成问题转化为对前向扩散逆过程的学习，相比直接建模数据分布有如下优势：训练稳定性、明确化的训练目标（ELBO）、可控采样过程、与物理直觉的联系。
 
 <a id="2019—y-song--e-ermon-score-based-generative-modeling--ncsn"></a>
 
-* **2019 arXiv (NeurIPS 2019): “Generative Modeling by Estimating Gradients of the Data Distribution” (Y. Song & E. Ermon)**
+## **2019 arXiv (NeurIPS 2019): “Generative Modeling by Estimating Gradients of the Data Distribution” (Y. Song & E. Ermon)**
 
-  > [Paper](https://arxiv.org/abs/1907.05600) & [Blog](http://yang-song.net/blog/2021/score/) & [Video](https://www.youtube.com/watch?v=8TcNXi3A5DI) & [Code](https://github.com/ermongroup/ncsn) & [Summary Video](https://www.youtube.com/watch?v=wMmqCMwuM2Q)
+> [Paper](https://arxiv.org/abs/1907.05600) & [Blog](http://yang-song.net/blog/2021/score/) & [Video](https://www.youtube.com/watch?v=8TcNXi3A5DI) & [Code](https://github.com/ermongroup/ncsn) & [Summary Video](https://www.youtube.com/watch?v=wMmqCMwuM2Q)
 
-  作者提出了一种基于 score 的生成建模框架。在该框架中，他们首先通过 score matching 来估计数据对数密度的梯度 $\nabla\_x \log p\_{\rm data}(x)$，然后在采样阶段利用 Langevin 动力学：在每次迭代中沿着所学得的 score 方向迈出小步，同时注入噪声。通过这种方式，随机噪声会在学习到的对数密度景观上逐步“爬升”到高概率区域，从而生成逼真的新样本。
+作者提出了一种基于 score 的生成建模框架。在该框架中，他们首先通过 score matching 来估计数据对数密度的梯度 $\nabla\_x \log p\_{\rm data}(x)$，然后在采样阶段利用 Langevin 动力学：在每次迭代中沿着所学得的 score 方向迈出小步，同时注入噪声。通过这种方式，随机噪声会在学习到的对数密度景观上逐步“爬升”到高概率区域，从而生成逼真的新样本。
 
-  ![Figure 2. The proposed score-based modeling framework with score matching and Langevin dynamics.](./assets/figure2.png)
+![Figure 2. The proposed score-based modeling framework with score matching and Langevin dynamics.](./assets/figure2.png)
 
-  **关于 score 函数的说明**：与统计学中常见的 score 函数不同，score matching 中的 score 是对输入 $x$ 的梯度，而不是对模型参数 $\theta$ 的梯度。在这里，score 函数是一个向量场，指示了密度函数增长最快的方向。
+**关于 score 函数的说明**：与统计学中常见的 score 函数不同，score matching 中的 score 是对输入 $x$ 的梯度，而不是对模型参数 $\theta$ 的梯度。在这里，score 函数是一个向量场，指示了密度函数增长最快的方向。
 
-  **基于 score 的建模框架的核心思想**：Langevin 动力学仅依赖于 score 函数 $\nabla\_{\mathbb x} \log p(\mathbb x)$，即可从某个概率密度 $p(\mathbb x)$ 中生成样本。为了从数据分布 $p\_\text{data}(\mathbb x)$中获得样本，需要首先训练一个 score 网络，使得 $\mathbb s\_\theta(\mathbb x) \approx \nabla\_x \log p\_\text{data}(\mathbb x)$，然后使用 $\mathbb s\_\theta(\mathbb x)$ 在 Langevin 动力学中近似采样。
+**基于 score 的建模框架的核心思想**：Langevin 动力学仅依赖于 score 函数 $\nabla\_{\mathbb x} \log p(\mathbb x)$，即可从某个概率密度 $p(\mathbb x)$ 中生成样本。为了从数据分布 $p\_\text{data}(\mathbb x)$中获得样本，需要首先训练一个 score 网络，使得 $\mathbb s\_\theta(\mathbb x) \approx \nabla\_x \log p\_\text{data}(\mathbb x)$，然后使用 $\mathbb s\_\theta(\mathbb x)$ 在 Langevin 动力学中近似采样。
 
-  ![Figure 3. The improved score-based modeling framework with denosing score matching and annealed Langevin dynamics.](./assets/figure3.png)
+![Figure 3. The improved score-based modeling framework with denosing score matching and annealed Langevin dynamics.](./assets/figure3.png)
 
-  **改进的基于 score 的生成建模**：研究者观察到，用高斯噪声扰动数据会让分布更适合基于 score 的生成建模。因此，他们在多个噪声水平上对数据进行破坏，然后训练一个噪声条件 score 网络（NCSN），即
+**改进的基于 score 的生成建模**：研究者观察到，用高斯噪声扰动数据会让分布更适合基于 score 的生成建模。因此，他们在多个噪声水平上对数据进行破坏，然后训练一个噪声条件 score 网络（NCSN），即
 $s\_\theta(x,\sigma)\approx\nabla\_x\log q\_\sigma(x)$ 以同时估计所有噪声尺度下的 score。该网络采用了 U-Net 架构，结合了 空洞卷积（dilated convolution），并使用 instance normalization。在训练好 NCSN $s\_\theta(x,\sigma)$ 后，作者受到模拟退火与退火重要性采样的启发，提出了一种新的采样过程——退火 Langevin 动力学。直观上，他们希望逐步降低数据分布的“温度”，以逐渐减小噪声水平。
 
+> score matching 相比于最大似然估计，避免了直接计算归一化常数，等价于最小化 Fisher divergence。结合 Langevin dynamics，噪声注入保证探索，梯度引导朝向高密度区域。
 ---
 
 <a id="2-core-diffusion-models-2020–2021"></a>
 
-## 2. Core Diffusion Models (2020–2021)
+# 2. Core Diffusion Models (2020–2021)
 
 <a id="2020—ho-et-al-denoising-diffusion-probabilistic-models"></a>
 
-* **2020 arXiv (NeurIPS 2020): “Denoising Diffusion Probabilistic Models” (Ho et al.)**
+## **2020 arXiv (NeurIPS 2020): “Denoising Diffusion Probabilistic Models” (Ho et al.)**
 
-  > [Paper](https://arxiv.org/abs/2006.11239) & [Website](https://hojonathanho.github.io/diffusion/) & [Video](https://slideslive.com/38936172) & [Code (official Tensorflow version)](https://github.com/hojonathanho/diffusion) & [Code (Pytorch version)](https://github.com/lucidrains/denoising-diffusion-pytorch) & [An In-Depth Guide Blog](https://learnopencv.com/denoising-diffusion-probabilistic-models/)
+> [Paper](https://arxiv.org/abs/2006.11239) & [Website](https://hojonathanho.github.io/diffusion/) & [Video](https://slideslive.com/38936172) & [Code (official Tensorflow version)](https://github.com/hojonathanho/diffusion) & [Code (Pytorch version)](https://github.com/lucidrains/denoising-diffusion-pytorch) & [An In-Depth Guide Blog](https://learnopencv.com/denoising-diffusion-probabilistic-models/)
 
-  ![Figure 4. The directed graphical model considered in DDPM.](./assets/figure4.png)
+![Figure 4. The directed graphical model considered in DDPM.](./assets/figure4.png)
 
-  The authors theoretically prove that the variational inference objective (maximizing log-likelihood) and the mean-squared-error training for noise prediction are mathematically equivalent, unifying the two viewpoints. From the variational inference perspective, DDPM decomposes the log-likelihood lower bound (VLB) into a series of KL divergences. From the score-matching perspective, the network implicitly performs score matching on each noisy data distribution by predicting the added noise. Optimizing the VLB naturally yields a weighted noise-prediction (score-matching) objective, and conversely, directly training to predict noise also maximizes the data log-likelihood.
+作者从理论上证明了：变分推断目标（最大化对数似然）与基于噪声预测的均方误差训练在数学上是等价的，从而统一了这两种视角。从**变分推断**的角度来看，DDPM 将对数似然下界（VLB）分解为一系列 KL 散度。从 **score matching** 的角度来看，网络在预测加入的噪声时，实际上隐式地对每个带噪数据分布执行了 score matching。在高斯前向过程假设下，变分下界（VLB）里的 KL 项化简为噪声预测的 MSE，这统一了变分推断视角和 score matching 视角。
 
-  ![Figure 5. From variational inference to denoising score matching.](./assets/figure5.png)
+![Figure 5. From variational inference to denoising score matching.](./assets/figure5.png)
 
-  The training loss evolves from variational inference to denoising score matching, and Langevin dynamics is the natural sampler for denoising score matching.
+变分推断视角目标是最大化数据对数似然 $\log p_\theta(x_0)$，DDPM 引入潜变量序列 $(x_1, x_2, \dots, x_T)$，定义前向扩散分布 $q(x_t|x_{t-1})$，并构造对数似然下界（VLB）：
 
-  ![Figure 6. Algorithms in DDPM.](./assets/figure6.png)
+$$
+\log p_\theta(x_0) \geq \mathbb E_q \Big[ \log p_\theta(x_T) + \sum_{t=1}^T \log \frac{p_\theta(x_{t-1}|x_t)}{q(x_{t-1}|x_t, x_0)} \Big]
+$$
+
+这可以分解为一系列 KL 散度，其中关键项是：
+
+$$
+\mathrm{KL}\big(q(x_{t-1}|x_t, x_0)\, \|\, p_\theta(x_{t-1}|x_t)\big)
+$$
+
+在 DDPM 中，前向过程是高斯噪声注入：
+
+$$
+q(x_t|x_0) = \mathcal N\big(\sqrt{\bar\alpha_t}x_0,(1-\bar\alpha_t)I\big)  
+$$
+
+因此，真实后验 $q(x_{t-1}|x_t, x_0)$ 也是高斯，可以写出均值的闭式解。模型的近似分布 $p_\theta(x_{t-1}|x_t)$ 同样假设为高斯，均值由神经网络给出。
+
+如果让网络直接预测 **噪声** $\epsilon$，那么预测的均值可以写成：
+
+$$
+\mu_\theta(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \Big(x_t - \frac{1-\alpha_t}{\sqrt{1-\bar\alpha_t}} \, \epsilon_\theta(x_t,t)\Big)
+$$
+
+将这个形式代入 KL 散度，可以化简得到：
+
+$$
+\mathcal L_t = \mathbb E_{x_0,\epsilon,t}\Big[\|\epsilon - \epsilon_\theta(x_t,t)\|^2\Big] + \text{常数}
+$$
+
+即 **最小化 KL 散度等价于最小化噪声预测的均方误差（MSE）**。
+  
+
+![Figure 6. Algorithms in DDPM.](./assets/figure6.png)
+
+> 为什么社区更常用噪声预测而不是直接预测 $x_0$？  
+> 直接预测 $x_0$ 对高噪声时间步 $t$ 敏感， $x_t$ 噪声很大直接回到 $x_0$ 太难，训练不稳定。而噪声预测网络只需学习噪声分布，而不是直接映射到干净样本，此外，数学上与 score matching 等价，训练目标理论上更稳健。
 
 <a id="2020—song-et-al-score-based-generative-modeling-through-sdes"></a>
 
-* **2020 arXiv (ICLR 2021): “Score-Based Generative Modeling through SDEs” (Song et al.)**
+## **2020 arXiv (ICLR 2021): “Score-Based Generative Modeling through SDEs” (Song et al.)**
 
   > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Video](https://iclr.cc/virtual/2021/poster/3177) & [Blog](http://yang-song.net/blog/2021/score/) & [Code (Tensorflow version)](https://github.com/yang-song/score_sde) & [Code (Pytorch version)](https://github.com/yang-song/score_sde_pytorch)
 
