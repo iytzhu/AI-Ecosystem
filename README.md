@@ -151,71 +151,86 @@ $$
 
 ## **2020 arXiv (ICLR 2021): “Score-Based Generative Modeling through SDEs” (Song et al.)**
 
-  > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Video](https://iclr.cc/virtual/2021/poster/3177) & [Blog](http://yang-song.net/blog/2021/score/) & [Code (Tensorflow version)](https://github.com/yang-song/score_sde) & [Code (Pytorch version)](https://github.com/yang-song/score_sde_pytorch)
+> [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Video](https://iclr.cc/virtual/2021/poster/3177) & [Blog](http://yang-song.net/blog/2021/score/) & [Code (Tensorflow version)](https://github.com/yang-song/score_sde) & [Code (Pytorch version)](https://github.com/yang-song/score_sde_pytorch)
 
-  通过将传统的离散噪声扰动过程提升为连续时间的**随机微分方程**（SDE）视角，这项工作把各种基于 score 的生成模型（例如 SMLD 和 DDPM）统一到一个框架下。具体来说，把数据转换为一个简单的噪声分布可以用一个连续时间的 SDE 来完成，并且根据 Anderson（1982）的结果，如果我们知道每个中间时间步的分布的 score（即 \$\nabla\_x \log p\_t(x)\$），那么该 SDE 可以被反向化（reverse）。为了训练 score 网络 \$s\_\theta(x, t)\approx \nabla\_x \log p\_t(x)\$，作者提出了一个统一的基于 SDE 的目标，使用加权的去噪 score matching（weighted DSM）。
+通过将传统的离散噪声扰动过程提升为连续时间的**随机微分方程**（SDE）视角，这项工作把各种基于 score 的生成模型（例如 SMLD 和 DDPM）统一到一个框架下。具体来说，把数据转换为一个简单的噪声分布可以用一个连续时间的 SDE 来完成，并且根据 Anderson（1982）的结果，如果我们知道每个中间时间步的分布的 score（即 \$\nabla\_x \log p\_t(x)\$），那么该 SDE 可以被反向化（reverse）。为了训练 score 网络 \$s\_\theta(x, t)\approx \nabla\_x \log p\_t(x)\$，作者提出了一个统一的基于 SDE 的目标，使用加权的去噪 score matching（weighted DSM）。
   
-  ![Figure 9. Solving a reverse-time SDE yields a score-based generative model.](./assets/figure9.png)
+![Figure 9. Solving a reverse-time SDE yields a score-based generative model.](./assets/figure9.png)
 
-  通过设计不同的函数 \$f(t)\$ 和 \$g(t)\$，可以实现各种已知模型：当 \$f = 0\$, \$g(t) = \sqrt{2\beta(t)}\$ 时，对应方差保持（Variance Preserving, VP）SDE，这与 DDPM 等价；当 \$f = -\frac{1}{2}\beta(t)\mathbf{x}\$, \$g(t) = \sqrt{\beta(t)}\$ 时，对应方差爆炸（Variance Exploding, VE）SDE，与最初的 score-based 模型（如 NCSN）相匹配。也可以定义新的扩散路径，例如 sub-VP。
+通过设计不同的函数 \$f(t)\$ 和 \$g(t)\$，可以实现各种已知模型：当 \$f = 0\$, \$g(t) = \sqrt{2\beta(t)}\$ 时，对应方差保持（Variance Preserving, VP）SDE，这与 DDPM 等价；当 \$f = -\frac{1}{2}\beta(t)\mathbf{x}\$, \$g(t) = \sqrt{\beta(t)}\$ 时，对应方差爆炸（Variance Exploding, VE）SDE，与最初的 score-based 模型（如 NCSN）相匹配。也可以定义新的扩散路径，例如 sub-VP。
 
-  ![Figure 10. Overview of score-based generative modeling through SEDs.](./assets/figure10.png)
+![Figure 10. Overview of score-based generative modeling through SEDs.](./assets/figure10.png)
 
-  T他们展示了可以将任何 SDE 转换为一个常微分方程（ODE）而不改变其边缘分布。通过求解该 ODE，可以从与反向 SDE 相同的分布中采样。该 SDE 对应的 ODE 被称为**概率流 ODE**（probability flow ODE）。
+他们展示了可以将任何 SDE 转换为一个常微分方程（ODE）而不改变其边缘分布。通过求解该 ODE，可以从与反向 SDE 相同的分布中采样。该 SDE 对应的 ODE 被称为**概率流 ODE**（probability flow ODE）。
 
-  作者将各种采样方法统一在 SDE 框架下：反向 SDE 可以用通用的 SDE 求解器（如 Euler–Maruyama 或 随机 Runge–Kutta）来求解。他们提出的 Predictor–Corrector（PC）采样器，将祖先采样（例如 DDPM 的做法）作为预测器（predictor）步骤，而将 Langevin MCMC（例如 SMLD 的做法）作为校正器（corrector）步骤，在每一步对样本进行细化。此外，他们引入了概率流 ODE 采样器——一个确定性的生成过程，允许精确计算似然并实现路径一致的、可控的生成。
+作者将各种采样方法统一在 SDE 框架下：反向 SDE 可以用通用的 SDE 求解器（如 Euler–Maruyama 或 随机 Runge–Kutta）来求解。他们提出的 Predictor–Corrector（PC）采样器，将祖先采样（例如 DDPM 的做法）作为预测器（predictor）步骤，而将 Langevin MCMC（例如 SMLD 的做法）作为校正器（corrector）步骤，在每一步对样本进行细化。此外，他们引入了概率流 ODE 采样器——一个确定性的生成过程，允许精确计算似然并实现路径一致的、可控的生成。
 
-  最后，论文给出了一种条件生成的方法，通过将分类器的梯度 \$\nabla\_{\mathbf{x}} \log p\_\phi(y|\mathbf{x})\$ 融入反向 SDE 或 ODE，从而实现**分类器引导**（classifier guidance），将生成过程导向所需类别。
+最后，论文给出了一种条件生成的方法，通过将分类器的梯度 \$\nabla\_{\mathbf{x}} \log p\_\phi(y|\mathbf{x})\$ 融入反向 SDE 或 ODE，从而实现**分类器引导**（classifier guidance），将生成过程导向所需类别。
 
 <a id="2020—song-et-al-denoising-diffusion-implicit-models"></a>
 
-* **2020 arXiv (ICLR 2021): “Denoising Diffusion Implicit Models” (Song et al.)**
+## **2020 arXiv (ICLR 2021): “Denoising Diffusion Implicit Models” (Song et al.)**
 
-  > [Paper](https://arxiv.org/abs/2010.02502) & [OpenReview](https://openreview.net/forum?id=St1giarCHLP) & [Video](https://slideslive.com/38953675) & [Code](https://github.com/ermongroup/ddim)
+> [Paper](https://arxiv.org/abs/2010.02502) & [OpenReview](https://openreview.net/forum?id=St1giarCHLP) & [Video](https://slideslive.com/38953675) & [Code](https://github.com/ermongroup/ddim)
 
-  作者设计了一族**跳步**（skip-step）噪声注入过程，由参数 \$\sigma\$ 参数化，虽然在关键时间步注入的噪声量与 DDPM 相同，但这些过程**不再要求严格的马尔可夫性**（即不必一步一步通过所有中间步骤）。
+作者设计了一族**跳步**（skip-step）噪声注入过程，由参数 \$\sigma\$ 参数化，虽然在关键时间步注入的噪声量与 DDPM 相同，但这些过程**不再要求严格的马尔可夫性**（即不必一步一步通过所有中间步骤）。
 
-  ![Figure 7. Graphical models for diffusion(left) and non-Markovian(right) inference models.](./assets/figure7.png)
+![Figure 7. Graphical models for diffusion(left) and non-Markovian(right) inference models.](./assets/figure7.png)
 
-  他们进一步证明，无论选择哪种由 \$\sigma\$ 参数化的跳步噪声注入过程，训练时所要最小化的变分下界目标在数值上与 DDPM 中使用的 \$L\_1\$ 近似损失完全相同。换句话说，只需用标准流程训练模型一次，然后在采样时可以自由切换不同的噪声注入/去噪轨迹而无需重新训练。
+他们进一步证明，无论选择哪种由 \$\sigma\$ 参数化的跳步噪声注入过程，训练时所要最小化的变分下界目标在数值上与 DDPM 中使用的 \$L\_1\$ 近似损失完全相同。换句话说，只需用标准流程训练模型一次，然后在采样时可以自由切换不同的噪声注入/去噪轨迹而无需重新训练。
 
-  ![Figure 8. Graphical model for accelerated generation, where \$\tau=\[1, 3\]\$.](./assets/figure8.png)
+![Figure 8. Graphical model for accelerated generation, where \$\tau=\[1, 3\]\$.](./assets/figure8.png)
 
-  这允许仅在选定的子序列 \${\tau\_1,\dots,\tau\_S}\$ 上执行前向噪声注入与反向去噪，这样当 \$S\ll T\$ 时，可以在保持高样本质量的同时实现 10×–100× 的加速，无需重训练。
+这允许仅在选定的子序列 \${\tau\_1,\dots,\tau\_S}\$ 上执行前向噪声注入与反向去噪，这样当 \$S\ll T\$ 时，可以在保持高样本质量的同时实现 10×–100× 的加速，无需重训练。
 
 <a id="2021—nichol--dhariwal-improved-denoising-diffusion-probabilistic-models"></a>
 
-* **2021 arXiv (ICML 2021): “Improved Denoising Diffusion Probabilistic Models” (Nichol & Dhariwal)**
+## **2021 arXiv (ICML 2021): “Improved Denoising Diffusion Probabilistic Models” (Nichol & Dhariwal)**
 
-  > [Paper](https://arxiv.org/abs/2102.09672) & [OpenReview](https://openreview.net/forum?id=-NEXDKk8gZ) & [Code](https://github.com/openai/improved-diffusion)
+> [Paper](https://arxiv.org/abs/2102.09672) & [OpenReview](https://openreview.net/forum?id=-NEXDKk8gZ) & [Code](https://github.com/openai/improved-diffusion)
 
-  本文提出了一系列针对 DDPM 的改进，旨在提高对数似然性能。
+本文提出了一系列针对 DDPM 的改进，旨在提高对数似然性能。
 
-  **学习方差**：作者首先指出尽管方差对于样本质量的重要性不及均值，但扩散过程的初始步骤对变分下界（VLB）的贡献最大。为改进对数似然，作者在对数域中将方差参数化为理论最优反向方差 \$\tilde \beta\_t\$ 与前向过程方差 \$\beta\_t\$ 之间的插值。引入一个**混合目标** \$L\_\text{hybrid}\$，用于联合优化简化的 DDPM 目标 \$L\_\text{simple}\$（用于**噪声预测**）与 VLB \$L\_\text{vlb}\$（用于**似然优化**）。在该设置下，\$L\_\text{simple}\$ 作为更新均值网络 \$\mu\_\theta\$ 的主要信号，而通过对 \$\mu\_\theta\$ 应用 stop-gradient，确保 \$L\_\text{vlb}\$ 仅指导方差网络 \$\Sigma\_\theta\$ 的更新。
+**学习方差**：作者首先指出尽管方差对于样本质量的重要性不及均值，但扩散过程的初始步骤对变分下界（VLB）的贡献最大。为改进对数似然，作者在对数域中将方差参数化为理论最优反向方差 \$\tilde \beta\_t\$ 与前向过程方差 \$\beta\_t\$ 之间的插值。引入一个**混合目标** $L_\text{hybrid}$，用于联合优化简化的 DDPM 目标 \$L\_\text{simple}\$（用于**噪声预测**）与 VLB \$L\_\text{vlb}\$（用于**似然优化**）。在该设置下， \$L\_\text{simple}\$ 作为更新均值网络 \$\mu\_\theta\$ 的主要信号，而通过对 \$\mu\_\theta\$ 应用 stop-gradient，确保 \$L\_\text{vlb}\$ 仅指导方差网络 \$\Sigma\_\theta\$ 的更新。
 
-  ![Figure 11. \$\bar \alpha\_t\$ throughout diffusion in the linear schedule and their proposed cosine schedule.](./assets/figure11.png)
+![Figure 11. \$\bar \alpha\_t\$ throughout diffusion in the linear schedule and their proposed cosine schedule.](./assets/figure11.png)
 
-  **改进噪声调度（Noise Schedule）**：作者提出了一种余弦（cosine）噪声时间表，使用平方余弦函数控制累积噪声水平 \$\bar \alpha\_t\$，确保在扩散过程的开始与结束阶段变化平缓，避免噪声骤增或信息过早破坏，同时允许中间阶段更快的变化。
+**改进噪声调度（Noise Schedule）**：作者提出了一种余弦（cosine）噪声时间表，使用平方余弦函数控制累积噪声水平 \$\bar \alpha\_t\$，确保在扩散过程的开始与结束阶段变化平缓，避免噪声骤增或信息过早破坏，同时允许中间阶段更快的变化。
 
-  ![Figure 12. Learning curves comparing the log-likelihoods achieved by different objects on ImageNet 64×64.](./assets/figure12.png)
+![Figure 12. Learning curves comparing the log-likelihoods achieved by different objects on ImageNet 64×64.](./assets/figure12.png)
 
-  **减少梯度噪声**：作者确认 \$L\_\text{vlb}\$ 中不同项量级差异很大是造成梯度噪声的来源。为此，他们采用一种**重要性采样策略**，基于每个损失项历史均方值动态调整采样概率，从而显著减少梯度噪声。该方法使得直接优化 \$L\_\text{vlb}\$ 成为可行，并在训练过程中实现比混合目标 \$L\_\text{hybrid}\$ 更平滑且更优的对数似然性能。
+**减少梯度噪声**：作者确认 \$L\_\text{vlb}\$ 中不同项量级差异很大是造成梯度噪声的来源。为此，他们采用一种**重要性采样策略**，基于每个损失项历史均方值动态调整采样概率，从而显著减少梯度噪声。该方法使得直接优化 \$L\_\text{vlb}\$ 成为可行，并在训练过程中实现比混合目标 \$L\_\text{hybrid}\$ 更平滑且更优的对数似然性能。
 
 <a id="2021—dhariwal--nichol-diffusion-models-beat-gans-on-image-synthesis"></a>
 
-* **2021 arXiv (NeurIPS 2021): “Diffusion Models Beat GANs on Image Synthesis” (Dhariwal & Nichol)**
+## **2021 arXiv (NeurIPS 2021): “Diffusion Models Beat GANs on Image Synthesis” (Dhariwal & Nichol)**
 
-  > [Paper](https://arxiv.org/abs/2105.05233) & [OpenReview](https://openreview.net/forum?id=AAWuCvzaVt) & [Video](https://slideslive.com/38967263) & [Code](https://github.com/openai/guided-diffusion)
+> [Paper](https://arxiv.org/abs/2105.05233) & [OpenReview](https://openreview.net/forum?id=AAWuCvzaVt) & [Video](https://slideslive.com/38967263) & [Code](https://github.com/openai/guided-diffusion)
 
-  作者展示了通过一系列消融研究找到更好的架构后，扩散模型在无条件图像合成上能够超越 GAN。改进主要集中于在 DDPM 的 **U-Net 架构基础上增加模型深度与宽度、增加更多注意力头**，并在多个分辨率上使用注意力机制。
+作者展示了通过一系列消融研究找到更好的架构后，扩散模型在无条件图像合成上能够超越 GAN。改进主要集中于在 DDPM 的 **U-Net 架构基础上增加模型深度与宽度、增加更多注意力头**，并在多个分辨率上使用注意力机制。
   
-  对于带条件的图像合成，他们进一步用**分类器引导**提高样本质量。其思路是：如果数据集带有类别标签，可以**在带噪样本上训练一个分类器** \$p\_\phi(y|x\_t, t)\$，然后在反向扩散采样过程中使用该分类器的梯度 \$\nabla\_{x\_t}\log p\_\phi(y|x\_t, t)\$ 来引导生成，使其生成指定类别的图像。
+对于带条件的图像合成，他们进一步用**分类器引导**提高样本质量。其思路是：如果数据集带有类别标签，可以**在带噪样本上训练一个分类器** \$p\_\phi(y|x\_t, t)\$，然后在反向扩散采样过程中使用该分类器的梯度 \$\nabla\_{x\_t}\log p\_\phi(y|x\_t, t)\$ 来引导生成，使其生成指定类别的图像。
 
-  ![Figure 16. Algorithm 1 Classifier guided diffusion sampling.](./assets/figure16.png)
+若已有一个能够预测样本所加噪声的模型 $\epsilon_\theta(x_t)$，则可由基于得分（score）的条件化技巧导出其得分函数： $\nabla_{x_t} \log p_\theta(x_t) = -\frac{1}{\sqrt{1 - \bar\alpha_t}} \epsilon_\theta(x_t)$，将其代入联合分布 $p_\theta(x_t) p_\phi(y\mid x_t)$ 的得分计算中：
 
-  具体而言，在每个去噪采样步骤，只需在无条件模型预测的均值 \$\mu\$ 上加上由分类器梯度 \$g\$ 与模型方差 \$\Sigma\$ 决定的偏移项 \$\Sigma g\$，从而将生成过程引导到所需类别。
+$$
+\begin{aligned}
+\nabla_{x_t}\log\bigl(p_\theta(x_t) p_\phi(y\mid x_t)\bigr)
+&= \nabla_{x_t}\log p_\theta(x_t) + \nabla_{x_t}\log p_\phi(y\mid x_t)\\
+&= -\frac{1}{\sqrt{1 - \bar\alpha_t}} \epsilon_\theta(x_t) + \nabla_{x_t}\log p_\phi(y\mid x_t).
+\end{aligned}
+$$
 
-  ![Figure 17. Algorithm 1 Classifier guided DDIM sampling.](./assets/figure17.png)
+最后，定义一个新的噪声预测器 $\hat\epsilon(x_t)$，对应于联合分布的得分映射： $\hat\epsilon(x_t):= \epsilon_\theta(x_t) - \sqrt{1 - \bar\alpha_t} \nabla_{x_t}\log p_\phi(y\mid x_t).$
+
+![Figure 16. Algorithm 1 Classifier guided diffusion sampling.](./assets/figure16.png)
+
+具体而言，在每个去噪采样步骤，只需在无条件模型预测的均值 \$\mu\$ 上加上由分类器梯度 \$g\$ 与模型方差 \$\Sigma\$ 决定的偏移项 \$\Sigma g\$，从而将生成过程引导到所需类别。
+
+![Figure 17. Algorithm 1 Classifier guided DDIM sampling.](./assets/figure17.png)
+
+> classifier 是一个普通的判别模型，输入 $x$，输出每个条件 $c$ 的概率 $p(c \mid x)$。生成过程里，我们选择一个目标条件 $c^\*$，并计算梯度 $\nabla_x \log p(c^\* \mid x)$。所以模型知道要引导生成向哪个条件靠近，因为这个条件被用作梯度的目标。  
+> 小结：分类器梯度 $\nabla_x \log p(c^\* \mid x)$ 是对输入 $x$ 的梯度，而不是模型内部参数的梯度，它告诉我们如何改变 $x$ 才能增加 $x$ 属于条件 $c^\*$ 的概率。
 
 <a id="2021—ho-et-al-classifier-free-diffusion-guidance"></a>
 
