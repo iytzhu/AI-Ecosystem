@@ -7,7 +7,7 @@
 
   * [2015 — Sohl-Dickstein et al. (Deep Unsupervised Learning using Nonequilibrium Thermodynamics)](#2015—sohl-dickstein-et-al-deep-unsupervised-learning-using-nonequilibrium-thermodynamics)
   * [2019 — Y. Song & E. Ermon (Score-based generative modeling / NCSN)](#2019—y-song--e-ermon-score-based-generative-modeling--ncsn)
-* [2 Core Diffusion Models (2020-2021)](#2-core-diffusion-models-2020–2021)
+* [2 Core Diffusion Models](#2-core-diffusion-models-2020–2021)
 
   * [2020 — Ho et al. (DDPM)](#2020—ho-et-al-denoising-diffusion-probabilistic-models)
   * [2020 — Song et al. (Score-Based Generative Modeling through SDEs)](#2020—song-et-al-score-based-generative-modeling-through-sdes)
@@ -15,7 +15,8 @@
   * [2021 — Nichol & Dhariwal (Improved DDPM)](#2021—nichol--dhariwal-improved-denoising-diffusion-probabilistic-models)
   * [2021 — Dhariwal & Nichol (Diffusion Models Beat GANs)](#2021—dhariwal--nichol-diffusion-models-beat-gans-on-image-synthesis)
   * [2021 — Ho et al. (Classifier-Free Guidance)](#2021—ho-et-al-classifier-free-diffusion-guidance)
-  
+  * [2023 - Loss-Guided Diffusion](#loss-guided-diffusion-icml-2023)
+  * [2023 - universal guidance for diffusion models](#universal-guidance-for-diffusion-models)
 * [3 Specific Applications of Diffusion Models](#3-specific-applications-of-diffusion-models)
 
   * [3.1 Image Generation from Text Descriptions](#31-image-generation-from-text-descriptions)
@@ -29,7 +30,6 @@
     * [CSDI (Tashiro et al.)](#csdi-tashiro-et-al)
     * [Decision Diffuser / Ajay et al.](#decision-diffuser-ajay-et-al)
     * [Diffuser (Janner et al.)](#diffuser-janner-et-al)
-    * [Loss-Guided Diffusion (ICML 2023)](#loss-guided-diffusion-icml-2023)
     * [Diffusion Policy (Chi et al.)](#diffusion-policy-chi-et-al)
     * [TSGM (Nikitin et al.)](#tsgm-nikitin-et-al)
     * [DiffPhyCon (Wei et al.)](#diffphycon-wei-et-al)
@@ -231,6 +231,28 @@ $$
 
   ![Figure 15. Algorithm 2 Conditional sampling with classifier-free guidance.](./assets/figure15.png)
 
+<a id="loss-guided-diffusion-icml-2023"></a>
+
+* **ICML 2023: “Loss-Guided Diffusion Models for Plug-and-Play Controllable Generation” (Song et al.)**
+
+  > [Paper](https://icml.cc/virtual/2023/poster/24571)
+
+  只要我们能在每一步计算预测去噪样本 \$\hat{x}\_t\$ 上定义的损失 \$\ell\_y(\hat{x}\_t)\$ 及其梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$，就可以为当前的采样状态 \$x\_t\$ 在任意时间 \$t\$ 提供一个引导方向。
+
+  扩散模型的去噪过程会逐步将噪声从 \$x\_T\$ 移除到 \$x\_0\$。在每一步，给定当前 \$x\_t\$，扩散模型可以预测相应的干净样本 \$\hat{x}\_t \approx \mathbb{E}\[x\_0 \mid x\_t]\$，这就是 MMSE 点估计。一旦得到 \$\hat{x}\_t\$，我们可以：
+
+  * **计算 \$\ell\_y(\hat{x}\_t)\$：** 衡量其与条件 \$y\$ 的匹配程度；
+  * **计算梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$：** 指示如何移动 \$\hat{x}\_t\$ 以更好地满足条件；
+  * **将该梯度反向传播到 \$x\_t\$：** 引导扩散模型的采样方向。
+
+  那么引导方向从何而来？在实践中我们计算 \$\nabla\_{x\_t}\ell\_y(\hat{x}\_t(x\_t)) = \frac{\partial \hat{x}\_t}{\partial x\_t}^\top \nabla\_{\hat{x}\_t}\ell\_y\$，其中 \$\frac{\partial \hat{x}\_t}{\partial x\_t}\$ 是通过扩散模型的预测网络反向传播得到的雅可比（梯度通道）。通过这种方式，在 \$\hat{x}\_t\$ 上定义的损失被“拉回”到当前状态 \$x\_t\$，使采样轨迹逐渐朝向所需条件移动。
+
+<a id="universal-guidance-for-diffusion-models"></a>
+
+* **2023 arXiv (ICLR 2024): “Universal Guidance for Diffusion Models” (Bansal et al.)**
+
+  > [Paper](https://arxiv.org/abs/2302.07121) & [Code](https://github.com/arpitbansal297/Universal-Guided-Diffusion)
+
 ---
 
 <a id="3-specific-applications-of-diffusion-models"></a>
@@ -312,23 +334,7 @@ $$
   > [Paper](https://arxiv.org/abs/2205.09991) & [Video](https://icml.cc/virtual/2022/oral/18292) or [Video (YouTube)](https://www.youtube.com/watch?v=ViBkYHg4rPI) & [Code](https://github.com/jannerm/diffuser) & [Website](https://diffusion-planning.github.io/)
 
   该工作的核心贡献是提出了一个适用于轨迹数据的去噪扩散模型及其概率框架——Diffuser，能够**同时预测整个计划的所有时间步**。
-
-<a id="loss-guided-diffusion-icml-2023"></a>
-
-* **ICML 2023: “Loss-Guided Diffusion Models for Plug-and-Play Controllable Generation” (Song et al.)**
-
-  > [Paper](https://icml.cc/virtual/2023/poster/24571)
-
-  只要我们能在每一步计算预测去噪样本 \$\hat{x}\_t\$ 上定义的损失 \$\ell\_y(\hat{x}\_t)\$ 及其梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$，就可以为当前的采样状态 \$x\_t\$ 在任意时间 \$t\$ 提供一个引导方向。
-
-  扩散模型的去噪过程会逐步将噪声从 \$x\_T\$ 移除到 \$x\_0\$。在每一步，给定当前 \$x\_t\$，扩散模型可以预测相应的干净样本 \$\hat{x}\_t \approx \mathbb{E}\[x\_0 \mid x\_t]\$，这就是 MMSE 点估计。一旦得到 \$\hat{x}\_t\$，我们可以：
-
-  * **计算 \$\ell\_y(\hat{x}\_t)\$：** 衡量其与条件 \$y\$ 的匹配程度；
-  * **计算梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$：** 指示如何移动 \$\hat{x}\_t\$ 以更好地满足条件；
-  * **将该梯度反向传播到 \$x\_t\$：** 引导扩散模型的采样方向。
-
-  那么引导方向从何而来？在实践中我们计算 \$\nabla\_{x\_t}\ell\_y(\hat{x}\_t(x\_t)) = \frac{\partial \hat{x}\_t}{\partial x\_t}^\top \nabla\_{\hat{x}\_t}\ell\_y\$，其中 \$\frac{\partial \hat{x}\_t}{\partial x\_t}\$ 是通过扩散模型的预测网络反向传播得到的雅可比（梯度通道）。通过这种方式，在 \$\hat{x}\_t\$ 上定义的损失被“拉回”到当前状态 \$x\_t\$，使采样轨迹逐渐朝向所需条件移动。
-
+  
 <a id="diffusion-policy-chi-et-al"></a>
 
 * **2023 arXiv (IJRR 2024): “Diffusion Policy: Visuomotor Policy Learning via Action Diffusion” (Chi et al.)**
