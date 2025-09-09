@@ -7,7 +7,7 @@
 
   * [2015 — Sohl-Dickstein et al. (Deep Unsupervised Learning using Nonequilibrium Thermodynamics)](#2015—sohl-dickstein-et-al-deep-unsupervised-learning-using-nonequilibrium-thermodynamics)
   * [2019 — Y. Song & E. Ermon (Score-based generative modeling / NCSN)](#2019—y-song--e-ermon-score-based-generative-modeling--ncsn)
-* [2 Core Diffusion Models (2020–2021)](#2-core-diffusion-models-2020–2021)
+* [2 Core Diffusion Models (2020-2021)](#2-core-diffusion-models-2020–2021)
 
   * [2020 — Ho et al. (DDPM)](#2020—ho-et-al-denoising-diffusion-probabilistic-models)
   * [2020 — Song et al. (Score-Based Generative Modeling through SDEs)](#2020—song-et-al-score-based-generative-modeling-through-sdes)
@@ -15,6 +15,7 @@
   * [2021 — Nichol & Dhariwal (Improved DDPM)](#2021—nichol--dhariwal-improved-denoising-diffusion-probabilistic-models)
   * [2021 — Dhariwal & Nichol (Diffusion Models Beat GANs)](#2021—dhariwal--nichol-diffusion-models-beat-gans-on-image-synthesis)
   * [2021 — Ho et al. (Classifier-Free Guidance)](#2021—ho-et-al-classifier-free-diffusion-guidance)
+  
 * [3 Specific Applications of Diffusion Models](#3-specific-applications-of-diffusion-models)
 
   * [3.1 Image Generation from Text Descriptions](#31-image-generation-from-text-descriptions)
@@ -152,19 +153,19 @@ $$
 
   > [Paper](https://arxiv.org/pdf/2011.13456) & [OpenReview](https://openreview.net/forum?id=PxTIG12RRHS) & [Video](https://iclr.cc/virtual/2021/poster/3177) & [Blog](http://yang-song.net/blog/2021/score/) & [Code (Tensorflow version)](https://github.com/yang-song/score_sde) & [Code (Pytorch version)](https://github.com/yang-song/score_sde_pytorch)
 
-  By elevating the traditional discrete noise-perturbation process to a continuous-time stochastic differential equation (SDE) perspective, this work unifies various score-based generative models (such as SMLD and DDPM) under a single framework. Specifically, transforming data to a simple noise distribution can be accomplished with a continuous-time SDE and—according to Anderson’s 1982 result— this SDE can be reversed if we know the score of the distribution at each intermediate time step, \$\nabla\_x \log p\_t(x)\$. To train the score network \$s\_\theta(x, t)\approx \nabla\_x \log p\_t(x)\$, the authors propose a unified, SDE-based objective using weighted denoising score matching (DSM).
-
+  通过将传统的离散噪声扰动过程提升为连续时间的**随机微分方程**（SDE）视角，这项工作把各种基于 score 的生成模型（例如 SMLD 和 DDPM）统一到一个框架下。具体来说，把数据转换为一个简单的噪声分布可以用一个连续时间的 SDE 来完成，并且根据 Anderson（1982）的结果，如果我们知道每个中间时间步的分布的 score（即 \$\nabla\_x \log p\_t(x)\$），那么该 SDE 可以被反向化（reverse）。为了训练 score 网络 \$s\_\theta(x, t)\approx \nabla\_x \log p\_t(x)\$，作者提出了一个统一的基于 SDE 的目标，使用加权的去噪 score matching（weighted DSM）。
+  
   ![Figure 9. Solving a reverse-time SDE yields a score-based generative model.](./assets/figure9.png)
 
-  By designing different functions \$f(t)\$ and \$g(t)\$, various known models can be realized: When \$f = 0\$, \$g(t) = \sqrt{2\beta(t)}\$, it corresponds to the Variance Preserving (VP) SDE, which is equivalent to DDPM. When \$f = -\frac{1}{2}\beta(t)\mathbf{x}\$, \$g(t) = \sqrt{\beta(t)}\$, it corresponds to the Variance Exploding (VE) SDE, matching the original score-based models (e.g., NCSN). New diffusion paths can also be defined, such as sub-VP.
+  通过设计不同的函数 \$f(t)\$ 和 \$g(t)\$，可以实现各种已知模型：当 \$f = 0\$, \$g(t) = \sqrt{2\beta(t)}\$ 时，对应方差保持（Variance Preserving, VP）SDE，这与 DDPM 等价；当 \$f = -\frac{1}{2}\beta(t)\mathbf{x}\$, \$g(t) = \sqrt{\beta(t)}\$ 时，对应方差爆炸（Variance Exploding, VE）SDE，与最初的 score-based 模型（如 NCSN）相匹配。也可以定义新的扩散路径，例如 sub-VP。
 
   ![Figure 10. Overview of score-based generative modeling through SEDs.](./assets/figure10.png)
 
-  They show it is possible to convert any SDE into an ordinary differential equation (ODE) without changing its marginal distributions. Thus by solving this ODE, they can sample from the same distributions as the reverse SDE. The corresponding ODE of an SDE is named probability flow ODE.
+  T他们展示了可以将任何 SDE 转换为一个常微分方程（ODE）而不改变其边缘分布。通过求解该 ODE，可以从与反向 SDE 相同的分布中采样。该 SDE 对应的 ODE 被称为**概率流 ODE**（probability flow ODE）。
 
-  The authors unify various sampling methods under the SDE framework: the reverse SDE can be solved using general-purpose SDE solvers such as Euler–Maruyama or stochastic Runge-Kutta. They propose the Predictor–Corrector (PC) sampler, which combines ancestral sampling (e.g., from DDPM) as the predictor step and Langevin MCMC (e.g., from SMLD) as the corrector step to refine the sample at each step. Additionally, they introduce the Probability Flow ODE sampler, a deterministic generative process that enables exact likelihood computation and controllable, path-consistent generation.
+  作者将各种采样方法统一在 SDE 框架下：反向 SDE 可以用通用的 SDE 求解器（如 Euler–Maruyama 或 随机 Runge–Kutta）来求解。他们提出的 Predictor–Corrector（PC）采样器，将祖先采样（例如 DDPM 的做法）作为预测器（predictor）步骤，而将 Langevin MCMC（例如 SMLD 的做法）作为校正器（corrector）步骤，在每一步对样本进行细化。此外，他们引入了概率流 ODE 采样器——一个确定性的生成过程，允许精确计算似然并实现路径一致的、可控的生成。
 
-  Finally, the paper presents a method for conditional generation by incorporating the gradient of a classifier \$\nabla\_{\mathbf{x}} \log p\_\phi(y|\mathbf{x})\$ into the reverse SDE or ODE, enabling classifier guidance to steer the generation toward desired classes.
+  最后，论文给出了一种条件生成的方法，通过将分类器的梯度 \$\nabla\_{\mathbf{x}} \log p\_\phi(y|\mathbf{x})\$ 融入反向 SDE 或 ODE，从而实现**分类器引导**（classifier guidance），将生成过程导向所需类别。
 
 <a id="2020—song-et-al-denoising-diffusion-implicit-models"></a>
 
@@ -172,15 +173,15 @@ $$
 
   > [Paper](https://arxiv.org/abs/2010.02502) & [OpenReview](https://openreview.net/forum?id=St1giarCHLP) & [Video](https://slideslive.com/38953675) & [Code](https://github.com/ermongroup/ddim)
 
-  The authors devise a family of “skip-step” noise-injection processes, parameterized by σ, that inject the same amount of noise at each key timestep as a DDPM but no longer require strictly Markovian, one-step-at-a-time progression through every intermediate step.
+  作者设计了一族**跳步**（skip-step）噪声注入过程，由参数 \$\sigma\$ 参数化，虽然在关键时间步注入的噪声量与 DDPM 相同，但这些过程**不再要求严格的马尔可夫性**（即不必一步一步通过所有中间步骤）。
 
   ![Figure 7. Graphical models for diffusion(left) and non-Markovian(right) inference models.](./assets/figure7.png)
 
-  They further show that no matter which σ-parameterized “skip-step” noise-injection process you choose, the variational lower-bound objective you minimize during training is exactly the same \$L\_1\$ surrogate loss used in DDPMs. In other words, you only need to train the model once with the standard procedure, and you can then freely switch between different noise-injection/denoising trajectories at sampling time without retraining.
+  他们进一步证明，无论选择哪种由 \$\sigma\$ 参数化的跳步噪声注入过程，训练时所要最小化的变分下界目标在数值上与 DDPM 中使用的 \$L\_1\$ 近似损失完全相同。换句话说，只需用标准流程训练模型一次，然后在采样时可以自由切换不同的噪声注入/去噪轨迹而无需重新训练。
 
   ![Figure 8. Graphical model for accelerated generation, where \$\tau=\[1, 3\]\$.](./assets/figure8.png)
 
-  This allows you to perform both the forward noise injection and reverse denoising only on a chosen subsequence \${\tau\_1,\dots,\tau\_S}\$, so that when \$S\ll T\$, you achieve a 10×–100× speedup while maintaining high sample quality, with no retraining required.
+  这允许仅在选定的子序列 \${\tau\_1,\dots,\tau\_S}\$ 上执行前向噪声注入与反向去噪，这样当 \$S\ll T\$ 时，可以在保持高样本质量的同时实现 10×–100× 的加速，无需重训练。
 
 <a id="2021—nichol--dhariwal-improved-denoising-diffusion-probabilistic-models"></a>
 
@@ -188,17 +189,17 @@ $$
 
   > [Paper](https://arxiv.org/abs/2102.09672) & [OpenReview](https://openreview.net/forum?id=-NEXDKk8gZ) & [Code](https://github.com/openai/improved-diffusion)
 
-  This paper presents a series of improvements to DDPM models aimed at improving the log-likelihood.
+  本文提出了一系列针对 DDPM 的改进，旨在提高对数似然性能。
 
-  **Learning Variance**: It first identifies that although the variance is less critical than the mean for sample quality, the initial steps of the diffusion process contribute most significantly to the variational lower bound (VLB). To improve log-likelihood, the authors parameterize the variance as an interpolation between the theoretically optimal reverse variance \$\tilde \beta\_t\$ and the forward process variance \$\beta\_t\$ in the log domain. A hybrid objective \$L\_\text{hybrid}\$ is introduced to jointly optimize the simplified DDPM objective \$L\_\text{simple}\$ (for noise prediction) and the VLB \$L\_\text{vlb}\$ (for likelihood optimization). In this setup, \$L\_\text{simple}\$ serves as the primary signal for updating the mean network \$\mu\_\theta\$, while stop-gradient applied to \$\mu\_\theta\$ ensures that \$L\_\text{vlb}\$ only guides the updates of the variance network \$\Sigma\_\theta\$.
+  **学习方差**：作者首先指出尽管方差对于样本质量的重要性不及均值，但扩散过程的初始步骤对变分下界（VLB）的贡献最大。为改进对数似然，作者在对数域中将方差参数化为理论最优反向方差 \$\tilde \beta\_t\$ 与前向过程方差 \$\beta\_t\$ 之间的插值。引入一个**混合目标** \$L\_\text{hybrid}\$，用于联合优化简化的 DDPM 目标 \$L\_\text{simple}\$（用于**噪声预测**）与 VLB \$L\_\text{vlb}\$（用于**似然优化**）。在该设置下，\$L\_\text{simple}\$ 作为更新均值网络 \$\mu\_\theta\$ 的主要信号，而通过对 \$\mu\_\theta\$ 应用 stop-gradient，确保 \$L\_\text{vlb}\$ 仅指导方差网络 \$\Sigma\_\theta\$ 的更新。
 
   ![Figure 11. \$\bar \alpha\_t\$ throughout diffusion in the linear schedule and their proposed cosine schedule.](./assets/figure11.png)
 
-  **Improving the Noise Schedule**: The authors propose a cosine noise schedule, which uses a squared cosine function to control the cumulative noise level \$\bar \alpha\_t\$, ensuring gradual changes at the beginning and end of the diffusion process to avoid abrupt noise increases or premature information destruction, while allowing faster changes in the middle phase.
+  **改进噪声调度（Noise Schedule）**：作者提出了一种余弦（cosine）噪声时间表，使用平方余弦函数控制累积噪声水平 \$\bar \alpha\_t\$，确保在扩散过程的开始与结束阶段变化平缓，避免噪声骤增或信息过早破坏，同时允许中间阶段更快的变化。
 
   ![Figure 12. Learning curves comparing the log-likelihoods achieved by different objects on ImageNet 64×64.](./assets/figure12.png)
 
-  **Reducing Gradient Noise**: The authors confirm that greatly different magnitudes among different terms of L\_vlb are the source of noise. To address this, they employ an importance sampling strategy, dynamically adjusting the sampling probability based on the historical mean squared values of each loss term, thereby significantly reducing gradient noise. This method makes direct optimization of L\_vlb feasible, achieving superior log-likelihood performance compared to the hybrid objective L\_hybrid, with a smoother training process.
+  **减少梯度噪声**：作者确认 \$L\_\text{vlb}\$ 中不同项量级差异很大是造成梯度噪声的来源。为此，他们采用一种**重要性采样策略**，基于每个损失项历史均方值动态调整采样概率，从而显著减少梯度噪声。该方法使得直接优化 \$L\_\text{vlb}\$ 成为可行，并在训练过程中实现比混合目标 \$L\_\text{hybrid}\$ 更平滑且更优的对数似然性能。
 
 <a id="2021—dhariwal--nichol-diffusion-models-beat-gans-on-image-synthesis"></a>
 
@@ -206,13 +207,13 @@ $$
 
   > [Paper](https://arxiv.org/abs/2105.05233) & [OpenReview](https://openreview.net/forum?id=AAWuCvzaVt) & [Video](https://slideslive.com/38967263) & [Code](https://github.com/openai/guided-diffusion)
 
-  The authors show that diffusion models beat GANs on unconditional image synthesis by finding a better architecture through a series of ablations. The improvements are primarily focused on building on the DDPM’s U-Net architecture by increasing the model’s depth and width, adding more attention heads, and employing attention mechanisms at multiple resolutions.
-
-  For conditional image synthesis, they further improve sample quality with classifier guidance. The idea here is that if you have class labels together with your dataset, you can train a classifier \$p\_\phi(y|x\_t, t)\$ on not only the dataset but also noisy samples of the dataset, and then you can use the gradients from this classifier \$\nabla\_{x\_t}\log p\_\phi(y|x\_t, t)\$ in order to guide the generation during the reverse diffusion sampling process, enabling it to produce images of the specified class.
+  作者展示了通过一系列消融研究找到更好的架构后，扩散模型在无条件图像合成上能够超越 GAN。改进主要集中于在 DDPM 的 **U-Net 架构基础上增加模型深度与宽度、增加更多注意力头**，并在多个分辨率上使用注意力机制。
+  
+  对于带条件的图像合成，他们进一步用**分类器引导**提高样本质量。其思路是：如果数据集带有类别标签，可以**在带噪样本上训练一个分类器** \$p\_\phi(y|x\_t, t)\$，然后在反向扩散采样过程中使用该分类器的梯度 \$\nabla\_{x\_t}\log p\_\phi(y|x\_t, t)\$ 来引导生成，使其生成指定类别的图像。
 
   ![Figure 16. Algorithm 1 Classifier guided diffusion sampling.](./assets/figure16.png)
 
-  Specifically, at each denoising sampling step, one only needs to add an offset term \$\Sigma g\$—determined by the classifier gradient \$g\$ and the model variance \$\Sigma\$—to the mean \$\mu\$ predicted by the unconditional model, thereby guiding the generation process towards the desired class.
+  具体而言，在每个去噪采样步骤，只需在无条件模型预测的均值 \$\mu\$ 上加上由分类器梯度 \$g\$ 与模型方差 \$\Sigma\$ 决定的偏移项 \$\Sigma g\$，从而将生成过程引导到所需类别。
 
   ![Figure 17. Algorithm 1 Classifier guided DDIM sampling.](./assets/figure17.png)
 
@@ -222,11 +223,11 @@ $$
 
   > [Paper](https://arxiv.org/abs/2207.12598) & [OpenReview](https://openreview.net/forum?id=qw8AKxfYbI) & [Code](https://github.com/lucidrains/classifier-free-guidance-pytorch) & [Blog](https://sander.ai/2022/05/26/guidance.html)
 
-  The classifier must be trained on the noisy data so it is generally not possible to plug in a pre-trained classifier. Rather than sampling in the direction of the gradient of an image classifier, classifier-free guidance instead mixes the score estimates of a conditional diffusion model and a jointly trained unconditional diffusion model. The authors use a single network to parameterize both models, where for the unconditional model they can simply input a null token \$\varnothing\$ for the class identifier \$\mathbb c\$ when predicting the score. They jointly train the unconditional and conditional models simply by randomly setting \$\mathbb c\$ to the unconditional class identifier \$\varnothing\$ with some probability \$p\_\text{uncond}\$, set as a hyperparameter.
+  由于分类器必须在带噪数据上训练，因此通常无法直接插入一个预训练的分类器进行引导。**无分类器引导**的做法是混合联合训练的**条件扩散模型**和**无条件扩散模型**的 score 估计。作者用一个网络同时参数化两个模型：对于无条件模型，可以在类别标识符 \$\mathbb c\$ 输入位置放入空标记 \$\varnothing\$。他们通过在训练时以某个概率 \$p\_\text{uncond}\$ 随机将 \$\mathbb c\$ 设为 \$\varnothing\$ 来联合训练有条件与无条件模型。
 
   ![Figure 14. Algorithm 1 Joint training a diffusion model with classifier-free guidance.](./assets/figure14.png)
 
-  They then perform sampling using the linear combination of the conditional and unconditional score estimates.
+  采样时，他们使用条件与无条件 score 估计的线性组合进行生成。
 
   ![Figure 15. Algorithm 2 Conditional sampling with classifier-free guidance.](./assets/figure15.png)
 
@@ -246,12 +247,11 @@ $$
 
   > [Paper](https://arxiv.org/abs/2112.10752) & [Video](https://www.youtube.com/watch?v=-3EkERbcZns) & [Video](https://www.youtube.com/watch?v=7W4aZObNucI) & [Code](https://github.com/CompVis/latent-diffusion)
 
-  Diffusion models belong to the class of likelihood-based models, whose mode-covering behavior makes them prone to spend excessive amounts of capacity (and thus compute resources)
-  on modeling imperceptible details of the data. To reduce the computational complexity for both training and sampling, the authors introduce an explicit separation of the compressive from the generative learning phase.
+  扩散模型属于基于似然的模型类别，其覆盖模式（mode-covering）行为会使得模型倾向于把大量容量（及计算资源）花在建模数据中不可察觉的细节上。为降低训练与采样的计算复杂度，作者引入了将**感知压缩**（perceptual compression）与**生成学习**阶段明确分离的做法。
 
   ![Figure 20. Illustrating perceptual and semantic compression.](./assets/figure20.png)
 
-  To achieve this, they utilize an autoencoding model which learns a space that is perceptually equivalent to the image space, but offers significantly reduced computational complexity. Conditional distributions of the form \$p(z|y)\$ can be implemented with a conditional denoising autoencoder \$\epsilon\_\theta(z\_t, t, y)\$. A more flexible way is by augmenting the underlying UNet backbone with cross-attention mechanism, which is effective for learning attention-based models of various input modalities.
+  为实现这一点，他们使用了一个自编码模型，学习出一个**在感知上等同于图像空间但计算复杂度显著降低的潜在空间**。形式上，可以用条件去噪自编码器 \$\epsilon\_\theta(z\_t, t, y)\$ 实现条件分布 \$p(z|y)\$。更灵活的方式是通过**在基础 U-Net 上加入 cross-attention 机制**，这对学习基于注意力的多模态条件（例如文本）非常有效。
 
   ![Figure 21. Condition LDMs either via concatenation or by a more general cross-attention mechanism.](./assets/figure21.png)
 
@@ -289,19 +289,21 @@ $$
 
   > [Paper](https://arxiv.org/abs/2107.03502) & [OpenReview](https://openreview.net/forum?id=VzuIzbRDrum) & [Code](https://github.com/ermongroup/CSDI)
 
+  ![Figure. CSDI.](./assets/CSDI.png)
+  
 <a id="decision-diffuser-ajay-et-al"></a>
 
 * **2022 arXiv (ICLR 2023): “Is Conditional Generative Modeling all you need for Decision-Making?” (Ajay et al.)**
 
   > [Paper](https://arxiv.org/abs/2211.15657) & [Video](https://iclr.cc/virtual/2023/oral/12696) & [Website](https://anuragajay.github.io/decision-diffuser/) & [Code](https://github.com/anuragajay/decision-diffuser)
 
-  The key contribution lies in demonstrating that conditional diffusion policies can surpass traditional offline RL methods without relying on dynamic programming, while also supporting multiple constraints and skill composition.
+  该工作的重要贡献在于展示条件扩散策略在无需动态规划的情况下可以超越传统的离线强化学习方法，同时支持多重约束与技能组合。
 
-  The authors demonstrate that, when action trajectories are non-smooth, the design of diffusing only the state sequence and then predicting actions via an inverse dynamics model outperforms jointly diffusing both states and actions. Specifically, this approach first diffuses the state sequence to generate an optimal state trajectory. Subsequently, for any two consecutive states \$s\_t\$ and \$s\_{t+1}\$ within the trajectory, it estimates the action required to achieve this state transition using an inverse dynamics model. This "plan the path first, then derive the actions" paradigm represents a key innovation that distinguishes methods like Decision Diffuser from traditional reinforcement learning and direct action generation approaches.
+  作者证明当动作轨迹不平滑时，仅对状态序列进行扩散然后通过逆动力学模型预测动作（即先规划状态轨迹，再通过逆动力学推导动作）优于同时对状态与动作联合扩散。具体而言，该方法首先对状态序列进行扩散以生成最优状态轨迹。随后，对于轨迹中任意相邻两帧状态 \$s\_t\$ 和 \$s\_{t+1}\$，使用逆动力学模型估计实现该状态转移所需的动作。该**先规划路径，再推导动作**的范式是 Decision Diffuser 等方法区别于传统强化学习与直接动作生成方法的关键创新。
 
   ![Figure 13. Planning with Decision Diffuser.](./assets/figure13.png)
 
-  They directly train a diffusion model conditioned on the trajectory return \$y(\tau)\$ from the offline dataset, using classifier-free guidance combined with low-temperature sampling to extract high-likelihood trajectories. Specifically, they condition the noise model on the trajectory return—first normalizing \$R(\tau)\$ to lie in $\[0,1]\$, then sampling with the condition \$R(\tau)=1\$ to obtain high-return trajectories. To generate trajectories that satisfy a given constraint \$C\_i\$ or demonstrate a particular skill, they condition the noise model on a one-hot encoding of that constraint or skill.
+  他们直接训练一个以轨迹回报 \$y(\tau)\$ 为条件的扩散模型（基于离线数据集），并结合无分类器引导与低温采样来提取高似然轨迹。具体地，他们先将回报 \$R(\tau)\$ 归一化到 $\[0,1]\$，然后以条件 \$R(\tau)=1\$ 采样以获得高回报轨迹。为生成满足某一约束 \$C\_i\$ 或展示特定技能的轨迹，他们将噪声模型条件化为该约束或技能的 one-hot 编码。
 
 <a id="diffuser-janner-et-al"></a>
 
@@ -309,7 +311,7 @@ $$
 
   > [Paper](https://arxiv.org/abs/2205.09991) & [Video](https://icml.cc/virtual/2022/oral/18292) or [Video (YouTube)](https://www.youtube.com/watch?v=ViBkYHg4rPI) & [Code](https://github.com/jannerm/diffuser) & [Website](https://diffusion-planning.github.io/)
 
-  The core contribution of this work is a denoising diffusion model and its probabilistic framework for behavior generation, Diffuser, specifically designed for trajectory data, capable of predicting all time steps of the entire plan simultaneously.
+  该工作的核心贡献是提出了一个适用于轨迹数据的去噪扩散模型及其概率框架——Diffuser，能够**同时预测整个计划的所有时间步**。
 
 <a id="loss-guided-diffusion-icml-2023"></a>
 
@@ -317,15 +319,15 @@ $$
 
   > [Paper](https://icml.cc/virtual/2023/poster/24571)
 
-  As long as we can compute the loss \$\ell\_y(\hat{x}*t)\$ and its gradient \$\nabla*{\hat{x}\_t}\ell\_y\$ on the predicted denoised sample \$\hat{x}\_t\$ at each step, we can provide a guidance direction for the current sampling state \$x\_t\$ at any time \$t\$.
+  只要我们能在每一步计算预测去噪样本 \$\hat{x}\_t\$ 上定义的损失 \$\ell\_y(\hat{x}\_t)\$ 及其梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$，就可以为当前的采样状态 \$x\_t\$ 在任意时间 \$t\$ 提供一个引导方向。
 
-  The diffusion model’s denoising process gradually removes noise from \$x\_T\$ toward \$x\_0\$. At each step, given the current \$x\_t\$, the diffusion model can predict the corresponding “clean” sample \$\hat{x}\_t \approx \mathbb{E}\[x\_0 \mid x\_t]\$, which is the MMSE point estimate. Once we have \$\hat{x}\_t\$, we can:
+  扩散模型的去噪过程会逐步将噪声从 \$x\_T\$ 移除到 \$x\_0\$。在每一步，给定当前 \$x\_t\$，扩散模型可以预测相应的干净样本 \$\hat{x}\_t \approx \mathbb{E}\[x\_0 \mid x\_t]\$，这就是 MMSE 点估计。一旦得到 \$\hat{x}\_t\$，我们可以：
 
-  * **Compute \$\ell\_y(\hat{x}\_t)\$:** measure how well it matches the condition \$y\$;
-  * **Compute the gradient \$\nabla\_{\hat{x}\_t}\ell\_y\$:** indicate how to move \$\hat{x}\_t\$ to better satisfy the condition;
-  * **Backpropagate this gradient to \$x\_t\$:** steer the diffusion model’s sampling direction.
+  * **计算 \$\ell\_y(\hat{x}\_t)\$：** 衡量其与条件 \$y\$ 的匹配程度；
+  * **计算梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$：** 指示如何移动 \$\hat{x}\_t\$ 以更好地满足条件；
+  * **将该梯度反向传播到 \$x\_t\$：** 引导扩散模型的采样方向。
 
-  So where does the guidance direction come from? In practice we compute \$\nabla\_{x\_t}\ell\_y(\hat{x}\_t(x\_t)) = \frac{\partial \hat{x}*t}{\partial x\_t}^\top ,\nabla*{\hat{x}\_t}\ell\_y\$, where \$\frac{\partial \hat{x}\_t}{\partial x\_t}\$ is the Jacobian (the gradient pathway) obtained by backpropagating through the diffusion model’s prediction network. In this way, the loss defined on \$\hat{x}\_t\$ is “pulled back” to the current state \$x\_t\$, causing the sampling trajectory to progressively move toward the desired condition.
+  那么引导方向从何而来？在实践中我们计算 \$\nabla\_{x\_t}\ell\_y(\hat{x}\_t(x\_t)) = \frac{\partial \hat{x}\_t}{\partial x\_t}^\top \nabla\_{\hat{x}\_t}\ell\_y\$，其中 \$\frac{\partial \hat{x}\_t}{\partial x\_t}\$ 是通过扩散模型的预测网络反向传播得到的雅可比（梯度通道）。通过这种方式，在 \$\hat{x}\_t\$ 上定义的损失被“拉回”到当前状态 \$x\_t\$，使采样轨迹逐渐朝向所需条件移动。
 
 <a id="diffusion-policy-chi-et-al"></a>
 
@@ -333,7 +335,7 @@ $$
 
   > [Paper](https://arxiv.org/abs/2303.04137) & [Video](https://www.youtube.com/watch?v=M03sZFfW-qU) & [Code](https://github.com/real-stanford/diffusion_policy) & [Website](https://diffusion-policy.cs.columbia.edu/)
 
-  The authors introduce a new form of robot visuomotor policy that generates behavior via a “conditional denoising diffusion process on robot action space”, called Diffusion Policy. Instead of directly outputting an action, the policy infers the action-score gradient, conditioned on visual observations, for K denoising iterations.
+  作者提出了一种新的机器人视觉运动策略形式，该策略通过在机器人动作空间上进行“条件去噪扩散过程”来生成行为，称为 Diffusion Policy。策略并非直接输出动作，而是在 $K$ 次去噪迭代中推断动作的 score 梯度，且以视觉观测作为条件。
 
   ![Figure 21. Policy Representations.](./assets/Policy_Representations.png)
 
@@ -345,7 +347,7 @@ $$
 
   > [Paper](https://arxiv.org/abs/2305.11567) & [Video](https://neurips.cc/virtual/2024/poster/97532) & [Code](https://github.com/AlexanderVNikitin/tsgm) & [Website](https://tsgm.readthedocs.io/en/latest/)
 
-  This is a work to study the time series generation problem based on the diffusion method. The TSGM architecture includes three components: an encoder, a decoder and a conditional score-matching network. The pre-trained encoder is used to embed the underlying time series into a latent space. The conditional score-matching network is used to sample the hidden states, which are then converted to the time series samples via the decoder.
+  该工作研究了基于扩散方法的时间序列生成问题。TSGM 架构包含三部分：编码器、解码器和条件 score-matching 网络。预训练的编码器用于将底层时间序列嵌入到潜在空间，条件 score-matching 网络用于对隐藏状态进行采样，然后通过解码器将其转换为时间序列样本。
 
 <a id="diffphycon-wei-et-al"></a>
 
@@ -353,12 +355,18 @@ $$
 
   > [Paper](https://web3.arxiv.org/abs/2407.06494) & [Video](https://neurips.cc/virtual/2024/poster/95505) & [Code](https://github.com/AI4Science-WestlakeU/diffphycon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2024/10/04/DiffPhyCon-A-Generative-Approach-to-Control-Complex-Physical-Systems.html)
 
+  介绍了一种名为 DiffPhyCon 的新方法，该方法利用生成模型通过最小化学习到的生成能量函数和指定的控制目标来控制复杂物理系统。此外，作者通过**先验重加权**增强了 DiffPhyCon，能够发现显著偏离训练分布的控制序列。
+
+  欢迎加入作者团队哟，[传送门](https://mp.weixin.qq.com/s?__biz=Mzk0ODU2OTQ0Nw==&mid=2247485740&idx=1&sn=5331d8bf5efcb44172345e2101908216&chksm=c2c3fb893f033dadc00a09e39ae3037c671bfe4c1384c27deddf92c4fbfc25ccf28563a12d57&mpshare=1&scene=1&srcid=0423E4utttD0HGuLnHB4E3Us&sharer_shareinfo=f2fe6cbaa976c96e8c9c459a5f4486ca&sharer_shareinfo_first=6ca23b4ef88437fa6f812f2885f083cb#rd)带你去见一群真诚有趣有实力的人~
+  
 <a id="cl-diffphycon-wei-et-al"></a>
 
 * **2024 arXiv (ICLR 2025): “CL-DiffPhyCon: Closed-loop Diffusion Control of Complex Physical Systems” (Wei et al.)**
 
   > [Paper](https://arxiv.org/abs/2408.03124) & [Video](https://iclr.cc/virtual/2025/poster/29738) & [Code](https://github.com/AI4Science-WestlakeU/CL_DiffPhyCon) & [Website](https://ai4s.lab.westlake.edu.cn/publications/2025/01/24/Closed-loop-Diffusion-Control-of-Complex-Physical-Systems.html)
 
+  CL-DiffPhyCon 通过**异步去噪框架**显著降低了采样过程中的计算成本。与现有的基于扩散的控制方法相比，CL-DiffPhyCon 能够在更短的时间内生成高质量的控制信号。并且 CL-DiffPhyCon 实现了闭环控制，根据实时环境反馈调整策略。在控制效果方面，它优于开环基于扩散的规划方法。
+  
 <a id="dppo-ren-et-al"></a>
 
 * **2024 arXiv (ICLR 2025): “Diffusion Policy Policy Optimization” (Ren et al.)**
@@ -373,7 +381,7 @@ $$
 
   ![Figure 24. Diffuse-CLoC's 3 stages.](./assets/Diffuse-CLoC's_3_stages.png)
 
-  **The same pre-trained diffusion model with different guidance techniques**: During training, they randomly sample time steps for state and action denoising independently, ensuring varied noise levels across trajectories. The model learns to denoise by predicting clean trajectories through mean squared error loss minimization. Next, during inference time conditioning, they use classifier guidance to complete novel downstream tasks. For each diffusion step, they input the noisy trajectory at step K into the model to predict both the clean trajectory and the noise. Then compute task specific costs and gradients based on predicted states and environmental information. These gradients modify the predicted noise to determine the next denoising steps mean from which they sample the next noisy trajectory iteratively.
+  **同一个预训练扩散模型应用不同的引导技术**：在训练阶段，他们独立随机采样状态和动作去噪的时间步，使轨迹的噪声水平具有多样性。模型通过最小化均方误差损失来学习通过预测干净轨迹进行去噪。接着，在推理条件化时，他们使用分类器引导来完成新的下游任务。对于每个扩散步骤，他们将步 $K$ 时的带噪轨迹输入模型以预测干净轨迹与噪声；然后基于预测状态与环境信息计算任务特定的代价与梯度，这些梯度会修改预测的噪声，从而确定下一步去噪的均值，并迭代地对下一个带噪轨迹进行采样。
 
   ![Figure 25. Framework of Diffuse-CLoC.](./assets/Framework_of_Diffuse-CLoC.png)
 
