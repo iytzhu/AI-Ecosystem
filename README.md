@@ -234,99 +234,113 @@ $$
 
 <a id="2021—ho-et-al-classifier-free-diffusion-guidance"></a>
 
-* **2021 arXiv (NeurIPS 2021): “Classifier-Free Diffusion Guidance” (Ho et al.)**
+## **2021 arXiv (NeurIPS 2021): “Classifier-Free Diffusion Guidance” (Ho et al.)**
 
-  > [Paper](https://arxiv.org/abs/2207.12598) & [OpenReview](https://openreview.net/forum?id=qw8AKxfYbI) & [Code](https://github.com/lucidrains/classifier-free-guidance-pytorch) & [Blog](https://sander.ai/2022/05/26/guidance.html)
+> [Paper](https://arxiv.org/abs/2207.12598) & [OpenReview](https://openreview.net/forum?id=qw8AKxfYbI) & [Code](https://github.com/lucidrains/classifier-free-guidance-pytorch) & [Blog](https://sander.ai/2022/05/26/guidance.html)
 
-  由于分类器必须在带噪数据上训练，因此通常无法直接插入一个预训练的分类器进行引导。**无分类器引导**的做法是混合联合训练的**条件扩散模型**和**无条件扩散模型**的 score 估计。作者用一个网络同时参数化两个模型：对于无条件模型，可以在类别标识符 \$\mathbb c\$ 输入位置放入空标记 \$\varnothing\$。他们通过在训练时以某个概率 \$p\_\text{uncond}\$ 随机将 \$\mathbb c\$ 设为 \$\varnothing\$ 来联合训练有条件与无条件模型。
+由于分类器必须在带噪数据上训练，因此通常无法直接插入一个预训练的分类器进行引导。**无分类器引导**的做法是混合联合训练的**条件扩散模型**和**无条件扩散模型**的 score 估计。作者用一个网络同时参数化两个模型：对于无条件模型，可以在类别标识符 \$\mathbb c\$ 输入位置放入空标记 \$\varnothing\$。他们通过在训练时以某个概率 \$p\_\text{uncond}\$ 随机将 \$\mathbb c\$ 设为 \$\varnothing\$ 来联合训练有条件与无条件模型。
 
-  ![Figure 14. Algorithm 1 Joint training a diffusion model with classifier-free guidance.](./assets/figure14.png)
+![Figure 14. Algorithm 1 Joint training a diffusion model with classifier-free guidance.](./assets/figure14.png)
 
-  采样时，他们使用条件与无条件 score 估计的线性组合进行生成。
+采样时，他们使用条件与无条件 score 估计的线性组合进行生成。
 
-  ![Figure 15. Algorithm 2 Conditional sampling with classifier-free guidance.](./assets/figure15.png)
+![Figure 15. Algorithm 2 Conditional sampling with classifier-free guidance.](./assets/figure15.png)
 
 <a id="loss-guided-diffusion-icml-2023"></a>
 
-* **ICML 2023: “Loss-Guided Diffusion Models for Plug-and-Play Controllable Generation” (Song et al.)**
+## **ICML 2023: “Loss-Guided Diffusion Models for Plug-and-Play Controllable Generation” (Song et al.)**
 
-  > [Paper](https://icml.cc/virtual/2023/poster/24571)
+> [Paper](https://icml.cc/virtual/2023/poster/24571)
 
-  只要我们能在每一步计算预测去噪样本 \$\hat{x}\_t\$ 上定义的损失 \$\ell\_y(\hat{x}\_t)\$ 及其梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$，就可以为当前的采样状态 \$x\_t\$ 在任意时间 \$t\$ 提供一个引导方向。
+只要我们能在每一步计算预测去噪样本 \$\hat{x}\_t\$ 上定义的损失 \$\ell\_y(\hat{x}\_t)\$ 及其梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$，就可以为当前的采样状态 \$x\_t\$ 在任意时间 \$t\$ 提供一个引导方向。
 
-  扩散模型的去噪过程会逐步将噪声从 \$x\_T\$ 移除到 \$x\_0\$。在每一步，给定当前 \$x\_t\$，扩散模型可以预测相应的干净样本 \$\hat{x}\_t \approx \mathbb{E}\[x\_0 \mid x\_t]\$，这就是 MMSE 点估计。一旦得到 \$\hat{x}\_t\$，我们可以：
+扩散模型的去噪过程会逐步将噪声从 \$x\_T\$ 移除到 \$x\_0\$。在每一步，给定当前 \$x\_t\$，扩散模型可以预测相应的干净样本 \$\hat{x}\_t \approx \mathbb{E}\[x\_0 \mid x\_t]\$，这就是 MMSE 点估计。一旦得到 \$\hat{x}\_t\$，我们可以：
 
-  * **计算 \$\ell\_y(\hat{x}\_t)\$：** 衡量其与条件 \$y\$ 的匹配程度；
-  * **计算梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$：** 指示如何移动 \$\hat{x}\_t\$ 以更好地满足条件；
-  * **将该梯度反向传播到 \$x\_t\$：** 引导扩散模型的采样方向。
+* **计算 \$\ell\_y(\hat{x}\_t)\$：** 衡量其与条件 \$y\$ 的匹配程度；
+* **计算梯度 \$\nabla\_{\hat{x}\_t}\ell\_y\$：** 指示如何移动 \$\hat{x}\_t\$ 以更好地满足条件；
+* **将该梯度反向传播到 \$x\_t\$：** 引导扩散模型的采样方向。
 
-  那么引导方向从何而来？在实践中我们计算 \$\nabla\_{x\_t}\ell\_y(\hat{x}\_t(x\_t)) = \frac{\partial \hat{x}\_t}{\partial x\_t}^\top \nabla\_{\hat{x}\_t}\ell\_y\$，其中 \$\frac{\partial \hat{x}\_t}{\partial x\_t}\$ 是通过扩散模型的预测网络反向传播得到的雅可比（梯度通道）。通过这种方式，在 \$\hat{x}\_t\$ 上定义的损失被“拉回”到当前状态 \$x\_t\$，使采样轨迹逐渐朝向所需条件移动。
+那么引导方向从何而来？在实践中我们计算 \$\nabla\_{x\_t}\ell\_y(\hat{x}\_t(x\_t)) = \frac{\partial \hat{x}\_t}{\partial x\_t}^\top \nabla\_{\hat{x}\_t}\ell\_y\$，其中 \$\frac{\partial \hat{x}\_t}{\partial x\_t}\$ 是通过扩散模型的预测网络反向传播得到的雅可比（梯度通道）。通过这种方式，在 \$\hat{x}\_t\$ 上定义的损失被“拉回”到当前状态 \$x\_t\$，使采样轨迹逐渐朝向所需条件移动。
 
 <a id="universal-guidance-for-diffusion-models"></a>
 
-* **2023 arXiv (ICLR 2024): “Universal Guidance for Diffusion Models” (Bansal et al.)**
+## **2023 arXiv (ICLR 2024): “Universal Guidance for Diffusion Models” (Bansal et al.)**
 
-  > [Paper](https://arxiv.org/abs/2302.07121) & [Code](https://github.com/arpitbansal297/Universal-Guided-Diffusion)
+> [Paper](https://arxiv.org/abs/2302.07121) & [Code](https://github.com/arpitbansal297/Universal-Guided-Diffusion)
 
 ---
 
 <a id="3-specific-applications-of-diffusion-models"></a>
 
-## 3. Specific Applications of Diffusion Models
+# 3. Specific Applications of Diffusion Models
 
 <a id="31-image-generation-from-text-descriptions"></a>
 
-### 3.1 Image Generation from Text Descriptions
+## 3.1 Image Generation from Text Descriptions
 
 <a id="stable-diffusion-rombachetal"></a>
 
-* **2021 arXiv (CVPR 2022): “High-Resolution Image Synthesis with Latent Diffusion Models” (Rombach et al.)** (Stable Diffusion)
+### **2021 arXiv (CVPR 2022): “High-Resolution Image Synthesis with Latent Diffusion Models” (Rombach et al.)** (Stable Diffusion)
 
-  > [Paper](https://arxiv.org/abs/2112.10752) & [Video](https://www.youtube.com/watch?v=-3EkERbcZns) & [Video](https://www.youtube.com/watch?v=7W4aZObNucI) & [Code](https://github.com/CompVis/latent-diffusion)
+> [Paper](https://arxiv.org/abs/2112.10752) & [Video](https://www.youtube.com/watch?v=-3EkERbcZns) & [Video](https://www.youtube.com/watch?v=7W4aZObNucI) & [Code](https://github.com/CompVis/latent-diffusion)
 
-  扩散模型属于基于似然的模型类别，其覆盖模式（mode-covering）行为会使得模型倾向于把大量容量（及计算资源）花在建模数据中不可察觉的细节上。为降低训练与采样的计算复杂度，作者引入了将**感知压缩**（perceptual compression）与**生成学习**阶段明确分离的做法。
+扩散模型属于基于似然的模型类别，其覆盖模式（mode-covering）行为会使得模型倾向于把大量容量（及计算资源）花在建模数据中不可察觉的细节上。为降低训练与采样的计算复杂度，作者引入了将**感知压缩**（perceptual compression）与**生成学习**阶段明确分离的做法。
 
-  ![Figure 20. Illustrating perceptual and semantic compression.](./assets/figure20.png)
+![Figure 20. Illustrating perceptual and semantic compression.](./assets/figure20.png)
 
-  为实现这一点，他们使用了一个自编码模型，学习出一个**在感知上等同于图像空间但计算复杂度显著降低的潜在空间**。形式上，可以用条件去噪自编码器 \$\epsilon\_\theta(z\_t, t, y)\$ 实现条件分布 \$p(z|y)\$。更灵活的方式是通过**在基础 U-Net 上加入 cross-attention 机制**，这对学习基于注意力的多模态条件（例如文本）非常有效。
+为实现这一点，他们使用了一个自编码模型，学习出一个**在感知上等同于图像空间但计算复杂度显著降低的潜在空间**。形式上，可以用条件去噪自编码器 \$\epsilon\_\theta(z\_t, t, y)\$ 实现条件分布 \$p(z|y)\$。更灵活的方式是通过**在基础 U-Net 上加入 cross-attention 机制**，这对学习基于注意力的多模态条件（例如文本）非常有效。
 
-  ![Figure 21. Condition LDMs either via concatenation or by a more general cross-attention mechanism.](./assets/figure21.png)
+![Figure 21. Condition LDMs either via concatenation or by a more general cross-attention mechanism.](./assets/figure21.png)
 
 <a id="dall·e-2-ramesh-et-al"></a>
 
-* **2022 arXiv: “Hierarchical Text-Conditional Image Generation with CLIP Latents” (Ramesh et al.)** (DALL·E 2)
+### **2022 arXiv: “Hierarchical Text-Conditional Image Generation with CLIP Latents” (Ramesh et al.)** (DALL·E 2)
 
-  > [Paper](https://arxiv.org/abs/2204.06125) & [Website](https://openai.com/index/dall-e-2/) & [Video](https://www.youtube.com/watch?v=TvBjoN3zkPY) & [Code](https://github.com/lucidrains/DALLE2-pytorch)
+> [Paper](https://arxiv.org/abs/2204.06125) & [Website](https://openai.com/index/dall-e-2/) & [Video](https://www.youtube.com/watch?v=TvBjoN3zkPY) & [Code](https://github.com/lucidrains/DALLE2-pytorch)
 
 <a id="imagen-saharia-et-al"></a>
 
-* **2022 arXiv (NeurIPS 2022 Outstanding Paper Award): “Photorealistic Text-to-Image Diffusion Models with Deep Language Understanding” (Saharia et al.)** (Imagen)
+### **2022 arXiv (NeurIPS 2022 Outstanding Paper Award): “Photorealistic Text-to-Image Diffusion Models with Deep Language Understanding” (Saharia et al.)** (Imagen)
 
-  > [Paper](https://arxiv.org/abs/2205.11487) & [OpenReview](https://openreview.net/forum?id=08Yk-n5l2Al) & [Website](https://imagen.research.google/)
+> [Paper](https://arxiv.org/abs/2205.11487) & [OpenReview](https://openreview.net/forum?id=08Yk-n5l2Al) & [Website](https://imagen.research.google/)
 
 ---
 
 <a id="32-language-generation"></a>
 
-### 3.2 Language Generation
+## 3.2 Language Generation
 
-* **2022 arXiv (NeurIPS 2020): “Language Models are Few-Shot Learners” (Brown et al.)** (GPT-3)
+### **2022 arXiv (NeurIPS 2020): “Language Models are Few-Shot Learners” (Brown et al.)** (GPT-3)
 
-  > [Paper](https://arxiv.org/abs/2005.14165)
+> [Paper](https://arxiv.org/abs/2005.14165)
 
 ---
 
 <a id="33-physical-control-systems--planning"></a>
 
-### 3.3 Physical Control Systems & Planning
+## 3.3 Physical Control Systems & Planning
 
 <a id="csdi-tashiro-et-al"></a>
 
-* **2021 arXiv (NeurIPS 2021): “CSDI: Conditional Score-based Diffusion Models for Probabilistic Time Series Imputation” (Tashiro et al.)**
+### **2021 arXiv (NeurIPS 2021): “CSDI: Conditional Score-based Diffusion Models for Probabilistic Time Series Imputation” (Tashiro et al.)**
 
-  > [Paper](https://arxiv.org/abs/2107.03502) & [OpenReview](https://openreview.net/forum?id=VzuIzbRDrum) & [Code](https://github.com/ermongroup/CSDI)
+> [Paper](https://arxiv.org/abs/2107.03502) & [OpenReview](https://openreview.net/forum?id=VzuIzbRDrum) & [Code](https://github.com/ermongroup/CSDI)
 
-  ![Figure. CSDI.](./assets/CSDI.png)
+设样本分成两部分：已观测的 $x^{\rm co}_0$（condition），和要插补的 $x^{\rm ta}_0$（target）。理想的条件生成应该直接建模反向过程
+
+$$
+\begin{aligned}
+p_\theta\bigl(x^{\rm ta}_{0:T}\mid x^{\rm co}_0\bigr)
+&:= p\bigl(x^{\rm ta}_T\bigr)\prod_{t=1}^T p_\theta\bigl(x^{\rm ta}_{t-1}\mid x^{\rm ta}_t,\,x^{\rm co}_0\bigr),\quad
+x^{\rm ta}_T\sim\mathcal{N}(0,I),\\
+p_\theta\bigl(x^{\rm ta}_{t-1}\mid x^{\rm ta}_t,\,x^{\rm co}_0\bigr)
+&:=\mathcal{N}\bigl(x^{\rm ta}_{t-1};\,\mu_\theta(x^{\rm ta}_t,t\mid x^{\rm co}_0), \quad \,\sigma_\theta(x^{\rm ta}_t,t\mid x^{\rm co}_0)\,I\bigr).
+\end{aligned}
+$$
+
+也就是说在每一步去噪时，网络可以**看到干净的观测 $x^{\rm co}_0$** 并据此恢复 $x^{\rm ta}_0$。
+
+![Figure. CSDI.](./assets/CSDI.png)
   
 <a id="decision-diffuser-ajay-et-al"></a>
 
