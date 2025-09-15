@@ -25,6 +25,7 @@
     * [DALL·E 2 (Ramesh et al.)](#dall·e-2-ramesh-et-al)
     * [Imagen (Saharia et al.)](#imagen-saharia-et-al)
   * [3.2 Language Generation](#32-language-generation)
+    * [GPT-3 (Brown et al.)](#GPT-3-brown-et-al)
   * [3.3 Physical Control Systems & Planning](#33-physical-control-systems--planning)
 
     * [CSDI (Tashiro et al.)](#csdi-tashiro-et-al)
@@ -309,6 +310,8 @@ $$
 <a id="32-language-generation"></a>
 
 ## 3.2 Language Generation
+
+<a id="GPT-3-brown-et-al"></a>
 
 ### **2022 arXiv (NeurIPS 2020): “Language Models are Few-Shot Learners” (Brown et al.)** (GPT-3)
 
