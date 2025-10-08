@@ -1,12 +1,12 @@
 # Large Language models timeline and key papers
-[https://antoss-landscape.my.canva.site/](https://antoss-landscape.my.canva.site/)
-[Transformers, the tech behind LLMs](https://www.youtube.com/watch?v=wjZofJX0v4M) & [Attention in transformers](https://www.youtube.com/watch?v=eMlx5fFNoYc)
+[Open Source LLM Development Landscape](https://antoss-landscape.my.canva.site/)
 
 ## Table of Contents
 * [Introduction](#introduction)
 * [1 Foundational Theory and Early Pioneering Works](#1-foundational-theory-and-early-pioneering-works)
-  * [2017 — Vaswani et al. (Attention is all you need)](#2017—vaswani-et-al-attention-is-all-you-need)
+  
 * [2 Core Large Language models](#2-core-large-language-models)
+  * [2017 — Vaswani et al. (Attention is all you need)](#2017—vaswani-et-al-attention-is-all-you-need)
   * [2020 — Lewis et al. (RAG)](#2020—lewis-et-al-RAG)
   * [2022 — Hu et al. (LoRA)](#2022—Hu-et-al-LoRA)
   
@@ -22,29 +22,43 @@
 <a id="1-foundational-theory-and-early-pioneering-works"></a>
 # 1. Foundational Theory and Early Pioneering Works
 
-<a id="2017—vaswani-et-al-attention-is-all-you-need"></a>
-## **2017 arXiv(NeurIPS 2020): “Attention Is All You Need” (Vaswani et al.)**
-
-> [Paper](https://arxiv.org/abs/1706.03762) & [Openreview](https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Reviews.html) & [Code(Original Tensorflow version)](https://github.com/tensorflow/tensor2tensor/blob/master/tensor2tensor/models/transformer.py) & [Code(Pytorch version)](https://github.com/jadore801120/attention-is-all-you-need-pytorch)
 
 
 <a id="2-core-large-language-models"></a>
 # 2. Core Large Language models
+
+<a id="2017—vaswani-et-al-attention-is-all-you-need"></a>
+## **2017 arXiv(NeurIPS 2020): “Attention Is All You Need” (Vaswani et al.)**
+
+> [Paper](https://arxiv.org/abs/1706.03762) & [Openreview](https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Reviews.html) & [Code(Original Tensorflow version)](https://github.com/tensorflow/tensor2tensor/blob/master/tensor2tensor/models/transformer.py) & [Code(Pytorch version)](https://github.com/jadore801120/attention-is-all-you-need-pytorch) & [Video(3Blue1Brown: Transformers, the tech behind LLMs)](https://www.youtube.com/watch?v=wjZofJX0v4M) & [Video(3Blue1Brown: Attention in transformers)](https://www.youtube.com/watch?v=eMlx5fFNoYc)
+
+提出了一种新的模型架构 Transformer，它放弃了循环结构，完全依赖注意力机制来建立输入和输出之间的全局依赖关系，从而允许显著的 **并行化**。它采用 **编码器-解码器结构**，编码器将符号表示的输入序列 $(x_1, ..., x_n)$ 映射为连续表示序列 $z = (z_1, ..., z_n)$，给定 $z$ 后，解码器逐个生成符号的输出序列 $(y_1, ..., y_m)$，在每一步，模型是自回归的，生成下一个符号时，消耗之前生成的符号作为附加输入。
+
+![Figure 1. Transformer architecture.](./assets/Transformer_architecture.png)
+
+使用 **缩放点积注意力**，计算查询与所有键的点积，将每个点积除以 $\sqrt{d_k}$，然后应用 softmax 函数得到对值的权重，输出矩阵为：
+
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right)V
+$$
+
+![Figure 2. Scaled Dot-Product Attention and Multi-Head Attention running in parallel.](./assets/Scaled_Dot-Product_Attention_and_Multi-Head_Attention_running_in_parallel.png)
+
 
 <a id="2020—lewis-et-al-RAG"></a>
 ## **2020 arXiv(NeurIPS 2020): “Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks” (Lewis et al.)** (RAG)
 
 > [Paper](https://arxiv.org/abs/2005.11401) & [Video](https://www.youtube.com/watch?v=JGpmQvlYRdU) & [Blog](https://ai.meta.com/blog/retrieval-augmented-generation-streamlining-the-creation-of-intelligent-natural-language-processing-models/)
   
-An LLM’s parameters essentially represent the general patterns of how humans use words to form sentences. Parameterized knowledge makes LLMs useful in responding to general prompts. However, it doesn’t serve users who want a deeper dive into a specific type of information. RAG can link generative AI services to external resources, especially ones rich in the latest technical details. It is a “general-purpose fine-tuning recipe”, because it can be used by nearly any LLM to connect with practically any external resource.
+大型语言模型（LLM）的参数本质上表示人类用词组成句子的总体模式。参数化的知识使得 LLM 在回应一般性提示时很有用；然而，对于想要深入某一特定类型信息的用户来说，这并不足够。检索增强生成（RAG）能够将生成式 AI 服务与外部资源（尤其是那些富含最新技术细节的资源）连接起来。它是一种“通用的微调方案”，因为几乎任何 LLM 都可以使用它来对接几乎任何外部资源。
 
-Given the prompt “When did the first mammal appear on Earth?” for instance, RAG might surface documents for “Mammal,” “History of Earth,” and “Evolution of Mammals.” These supporting documents are then concatenated as context with the original input and fed to the seq2seq model that produces the actual output. RAG thus has two sources of knowledge: the knowledge that seq2seq models store in their parameters (parametric memory) and the knowledge stored in the corpus from which RAG retrieves passages (nonparametric memory).
+例如，给定提示“第一只哺乳动物何时出现在地球上？”，RAG 可能会检索关于“哺乳动物”、“地球史”和“哺乳动物的进化”等主题的文档。这些支持性文档随后与原始输入串联作为上下文，一并输入到生成实际输出的序列到序列（seq2seq）模型中。因此，RAG 有两类知识来源：一类是 seq2seq 模型 **存储在其参数中的知识**（参数化记忆），另一类是 **存储在 RAG 所检索语料库中的知识**（非参数化记忆）。
 
-> [Here](https://video-lhr6-2.xx.fbcdn.net/o1/v/t2/f2/m69/AQNwycrlbizagrgj0JHtQnpQh_TG8YyE91LMk9pTlC8_Dt2U-S_tEi_joU9-uE6mw8JtChnUTPhpjcWIOtJUEf7r.mp4?strext=1&_nc_cat=104&_nc_sid=8bf8fe&_nc_ht=video-lhr6-2.xx.fbcdn.net&_nc_ohc=VSsV-5RWr28Q7kNvwEj-Cwt&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuNjQwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6MzE2NTUxNjI3OTIwMjAwLCJhc3NldF9hZ2VfZGF5cyI6MTc4MCwidmlfdXNlY2FzZV9pZCI6MTAxMjgsImR1cmF0aW9uX3MiOjM0LCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=iT6hU-9MhFEYf5KXPjxQhQ&_nc_zt=28&oh=00_AfUM-TyCD0GjjBOGYCjFY_5JD2QsO9ikZAlsnkNdSJ9dNw&oe=689DF056&bitrate=29198&tag=sve_sd) is a demo and [here](https://developer.nvidia.com/blog/rag-101-demystifying-retrieval-augmented-generation-pipelines/) is a overview of RAG pipeline components: ingest and query flows.
+> [Here](https://developer.nvidia.com/blog/rag-101-demystifying-retrieval-augmented-generation-pipelines/) is a overview of RAG pipeline components: ingest and query flows.
 
-![Figure 1. RAG pipeline.](./assets/figure18.png)
+![Figure 3. RAG pipeline.](./assets/figure18.png)
   
-RAG gives models sources they can cite, like footnotes in a research paper, so users can check any claims. It also reduces the possibility that a model will give a very plausible but incorrect answer, a phenomenon called hallucination.
+RAG 为模型提供了可供引用的来源，就像学术论文中的脚注，用户可以据此核查任何断言。它还能降低模型给出看似很有道理但实际上不正确答案的可能性——这种现象称为“幻觉”。
 
 <a id="2022—Hu-et-al-LoRA"></a>
 ## **2021 arXiv(ICLR 2022): “LoRA: Low-Rank Adaptation of Large Language Models” (J. Hu et al.)**
