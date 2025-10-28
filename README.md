@@ -1,7 +1,5 @@
 # Diffusion Model Timeline and Key Papers
 
-## Table of Contents
-
 * [Introduction](#introduction)
 * [1 Foundational Theory and Early Pioneering Works (2015–2019)](#1-foundational-theory-and-early-pioneering-works-2015–2019)
 
