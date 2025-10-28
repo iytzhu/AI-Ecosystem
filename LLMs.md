@@ -9,7 +9,7 @@
   * [2017 — Vaswani et al. (Attention is all you need)](#2017—vaswani-et-al-attention-is-all-you-need)
   * [2020 — Lewis et al. (RAG)](#2020—lewis-et-al-RAG)
   * [2022 — Hu et al. (LoRA)](#2022—Hu-et-al-LoRA)
-  
+  * [2022 — Brown et al. (GPT-3)](#GPT-3-brown-et-al)
 ---
   
 <a id="introduction"></a>
@@ -64,3 +64,10 @@ RAG 为模型提供了可供引用的来源，就像学术论文中的脚注，�
 ## **2021 arXiv(ICLR 2022): “LoRA: Low-Rank Adaptation of Large Language Models” (J. Hu et al.)**
 
 > [Paper](https://arxiv.org/abs/2106.09685) & [OpenReview](https://openreview.net/forum?id=nZeVKeeFYf9) & [Video](https://www.youtube.com/watch?v=DhRoTONcyZE) & [Code](https://github.com/microsoft/LoRA)
+
+
+<a id="GPT-3-brown-et-al"></a>
+
+## **2022 arXiv (NeurIPS 2020): “Language Models are Few-Shot Learners” (Brown et al.)** (GPT-3)
+
+> [Paper](https://arxiv.org/abs/2005.14165)
