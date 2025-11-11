@@ -20,6 +20,13 @@ Neural ODE 的核心思想：把“深度网络的层”看成是“时间上连
 <img src="./assets/ResNet_to_ODENet.png" alt="Figure 2. ResNet to ODENet" width="300">
 </p>
 
+密度随时间如何变化？论文证明了相对于时间或深度的对数密度的导数是由雅可比矩阵的迹给出，将其称为瞬时变量变换定理，首先迹比行列式要更廉价，其次该公式不需要神经网络是可逆的，作者使用该定理构建了一种连续的新型生成密度模型——连续归一化流（Continuous Normalizing Flows, CNF），它们持续地将简单分布转换为复杂分布。
+
+<p align="center">
+<img src="./assets/Instantaneous_change_of_variables.png" alt="Figure 3. Instantaneous change of variables." width="500">
+</p>
+
+
 ## 2022 arXiv(NeurIPS 2024 Tutorial): “Flow Matching for Generative Modeling” (Lipman et al.)
 > [Paper](https://arxiv.org/abs/2210.02747) & [Openreview](https://openreview.net/forum?id=PqvMRDCJT9t) & [Video](https://neurips.cc/virtual/2024/tutorial/99531)
 
