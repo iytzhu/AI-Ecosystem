@@ -34,7 +34,9 @@
 
 提出了一种新的模型架构 Transformer，它放弃了循环结构，完全依赖注意力机制来建立输入和输出之间的全局依赖关系，从而允许显著的 **并行化**。它采用 **编码器-解码器结构**，编码器将符号表示的输入序列 $(x_1, ..., x_n)$ 映射为连续表示序列 $z = (z_1, ..., z_n)$，给定 $z$ 后，解码器逐个生成符号的输出序列 $(y_1, ..., y_m)$，在每一步，模型是自回归的，生成下一个符号时，消耗之前生成的符号作为附加输入。
 
-![Figure 1. Transformer architecture.](./assets/Transformer_architecture.png)
+<p align="center">
+<img src="./assets/Transformer_architecture.png" alt="Figure 1. Transformer architecture." width="500">
+</p>
 
 使用 **缩放点积注意力**，计算查询与所有键的点积，将每个点积除以 $\sqrt{d_k}$，然后应用 softmax 函数得到对值的权重，输出矩阵为：
 
@@ -42,8 +44,9 @@ $$
 \text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right)V
 $$
 
-![Figure 2. Scaled Dot-Product Attention and Multi-Head Attention running in parallel.](./assets/Scaled_Dot-Product_Attention_and_Multi-Head_Attention_running_in_parallel.png)
-
+<p align="center">
+<img src="./assets/Scaled_Dot-Product_Attention_and_Multi-Head_Attention_running_in_parallel.png" alt="Figure 2. Scaled Dot-Product Attention and Multi-Head Attention running in parallel." width="500">
+</p>
 
 <a id="2020—lewis-et-al-RAG"></a>
 ## **2020 arXiv(NeurIPS 2020): “Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks” (Lewis et al.)** (RAG)
@@ -56,7 +59,9 @@ $$
 
 > [Here](https://developer.nvidia.com/blog/rag-101-demystifying-retrieval-augmented-generation-pipelines/) is a overview of RAG pipeline components: ingest and query flows.
 
-![Figure 3. RAG pipeline.](./assets/figure18.png)
+<p align="center">
+<img src="./assets/RAG_pipeline.png" alt="Figure 3. RAG pipeline." width="800">
+</p>
   
 RAG 为模型提供了可供引用的来源，就像学术论文中的脚注，用户可以据此核查任何断言。它还能降低模型给出看似很有道理但实际上不正确答案的可能性——这种现象称为“幻觉”。
 
