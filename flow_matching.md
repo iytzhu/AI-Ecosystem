@@ -5,7 +5,10 @@
 
 Neural ODE 的核心思想：把“深度网络的层”看成是“时间上连续演化的状态”，从而用微分方程来建模，而不是离散的层堆叠。
 
-![Figure 1. The idea of Neural ODE.](./assets/Neural_ODE.png)
+<p align="center">
+<img src="./assets/Neural_ODE.png" alt="Figure 1. The idea of Neural ODE" width="800">
+</p>
+
 
 注意到残差网络与欧拉积分器之间有着密切的联系，只需做一个简单的改动，就能使其动力学像 ODE 一样随深度连续变化，
 - 残差网络需要定义 ResNet 模块，它定义了每一层隐藏单元的更新，然后构建 ResNet，只需在每一层计算更新，并将其加入当前的隐藏状态，这看起来就像欧拉积分。
@@ -13,8 +16,9 @@ Neural ODE 的核心思想：把“深度网络的层”看成是“时间上连
 
 现在有了新的微分模型组件，可以随意放入模型中，将一组 ResNet 层全部替换为单个 ODE 网络，此外，ODENet 的优势在于它们通常比 ResNet 需要更少的参数，网络动态随深度平滑变化，相邻层的参数会自动绑定在一起，不同“层”（即不同时间点）共享同一组参数。
 
-![Figure 2. ResNet to ODENet.](./assets/ResNet_to_ODENet.png)
-
+<p align="center">
+<img src="./assets/ResNet_to_ODENet.png" alt="Figure 2. ResNet to ODENet" width="300">
+</p>
 
 ## 2022 arXiv(NeurIPS 2024 Tutorial): “Flow Matching for Generative Modeling” (Lipman et al.)
 > [Paper](https://arxiv.org/abs/2210.02747) & [Openreview](https://openreview.net/forum?id=PqvMRDCJT9t) & [Video](https://neurips.cc/virtual/2024/tutorial/99531)
