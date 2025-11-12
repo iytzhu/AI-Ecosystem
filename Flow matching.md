@@ -3,7 +3,7 @@
 ## 2018 arXiv(NeurIPS 2018 Oral): “Neural Ordinary Differential Equations” (Chen et al.)
 > [Paper](https://neurips.cc/virtual/2018/oral/12596) & [Video](https://www.youtube.com/watch?v=V6nGT0Gakyg)
 
-Neural ODE 的核心思想：把“深度网络的层”看成是“时间上连续演化的状态”，从而用微分方程来建模，而不是离散的层堆叠。
+**Neural ODE 的核心思想**：把深度网络的层看成是时间上连续演化的状态，从而用微分方程来建模，而不是离散的层堆叠。
 
 <p align="center">
 <img src="./assets/Neural_ODE.png" alt="Figure 1. The idea of Neural ODE" width="800">
@@ -84,10 +84,14 @@ $$
 ## 2023 arXiv(TMLR 2024): “Improving and generalizing flow-based generative models with minibatch optimal transport” (Tong et al.)
 > [Paper](https://arxiv.org/abs/2302.00482) & [Openreview](https://openreview.net/forum?id=CD9Snc73AW) & [Video](https://www.youtube.com/watch?v=UhDtH7Ia9Ag) & [Code](https://github.com/atong01/conditional-flow-matching)
 
+传统的 Flow Matching（FM）和 Conditional Flow Matching（CFM）提供了无需模拟（simulation-free）的回归式目标，但在 minibatch 情况下仍有高方差与训练不稳的问题。
+
+**关键思想**：在 minibatch 层面上，用小批量间的最优传输（minibatch optimal transport, MIT/OT）来构建更直且低方差的条件映射，使得每个 batch 内的条件对（source→target）对齐更有结构性，从而显著降低训练目标的方差并使学到的流更接近全局 Optimal Transport（Wasserstein）解。论文把采用 OT 对齐的 CFM 称作 OT-CFM。
+
 ## 2024 arXiv(IEEE 2024): “Efficient Trajectory Forecasting and Generation with Conditional Flow Matching” (Ye et al.)
 > [Paper](https://arxiv.org/abs/2403.10809) & [Code](https://github.com/CORE-Robotics-Lab/TCFM)
 
-提出轨迹条件 Flow Matching（T-CFM），学习时变向量场统一轨迹预测与生成任务，**强调实时决策**。在对抗性跟踪、飞行轨迹预测等场景中，比扩散模型预测准确率高 35%，规划性能提升 142%；采样速度快 100 倍，支持实时决策。
+**强调实时决策**，提出轨迹条件 Flow Matching（T-CFM），学习时变向量场统一轨迹预测与生成任务。在对抗性跟踪、飞行轨迹预测等场景中，比扩散模型预测准确率高 35%，规划性能提升 142%；采样速度快 100 倍，支持实时决策。
 
 ## 2025 arXiv(ICML 2025 spotlight): “On the Guidance of Flow Matching” (Feng et al.)
 > [Paper](https://arxiv.org/abs/2502.02150) & [Openreview](https://openreview.net/forum?id=pKaNgFzJBy) & [Video](https://icml.cc/virtual/2025/poster/44016) & [Code](https://github.com/AI4Science-WestlakeU/flow_guidance)
@@ -102,14 +106,14 @@ $$
 ## 2025 arXiv(NeurIPS 2025): “Mean Flows for One-step Generative Modeling” (Geng et al.)
 > [Paper](https://arxiv.org/abs/2505.13447) & [Code](https://github.com/haidog-yaqub/MeanFlow)
 
-最大的创新在于：将传统流匹配（Flow Matching）中学习“瞬时速度”（instantaneous velocity field）改为学习“平均速度”（average velocity field）。“平均”这里指在一个时间区间上状态变化的平均速率，而不是状态在每个瞬间的速率。由于直接学习平均速度场，MeanFlow 能够支持真正意义上的“1-NFE” (Number of Function Evaluations = 1)，即从噪声直接生成样本，仅一次函数调用即可完成生成，这极大加速了推理过程。
+**最大的创新在于**：将传统流匹配（Flow Matching）中学习“瞬时速度”（instantaneous velocity field）改为学习“平均速度”（average velocity field）。“平均”这里指在一个时间区间上状态变化的平均速率，而不是状态在每个瞬间的速率。由于直接学习平均速度场，MeanFlow 能够支持真正意义上的“1-NFE” (Number of Function Evaluations = 1)，即从噪声直接生成样本，仅一次函数调用即可完成生成，这极大加速了推理过程。
 
 ## 2025 arXiv(ICLR 2026): “Safe Flow Matching: Robot Motion Planning with Control Barrier Functions” (Dai et al.)
 > [Paper](https://arxiv.org/abs/2504.08661) & [Website](https://safeflowmatching.github.io/) & [Code](https://github.com/SafeFlowMatching/SafeFlow)
 
-强调实时安全约束，在 FM 框架中嵌入流匹配型控制障碍函数，保证生成轨迹全程安全。无需重新训练，实时在测试阶段执行安全校正。兼顾流匹配生成多模态轨迹能力，与其他生成式规划方法相比，在多场景下提供了显著更强的安全性和规划性能。
+**强调实时安全约束**，在 FM 框架中嵌入流匹配型控制障碍函数，保证生成轨迹全程安全。无需重新训练，实时在测试阶段执行安全校正。兼顾流匹配生成多模态轨迹能力，与其他生成式规划方法相比，在多场景下提供了显著更强的安全性和规划性能。
 
 ## 2025 arXiv(CVPR 2026): “GoalFlow: Goal-Driven Flow Matching for Multimodal Trajectories Generation in End-to-End Autonomous Driving” (Xing et al.)
 > [Paper](https://arxiv.org/abs/2503.05689) & [Website](https://zebinx.github.io/HomePage-of-GoalFlow/) & [Code](https://github.com/YvanYin/GoalFlow)
 
-在多模态轨迹生成中引入目标点约束，通过评分机制选取最优目标；使用 Flow Matching 生成多模态轨迹，并根据场景信息优化评分选最佳轨迹。相比纯扩散方法需要多步迭代，GoalFlow仅需 **一步（无迭代去噪）** 即可生成高质量轨迹。
+在多模态轨迹生成中引入目标点约束，通过评分机制选取最优目标；使用 Flow Matching 生成多模态轨迹，并根据场景信息优化评分选最佳轨迹。相比纯扩散方法需要多步迭代，GoalFlow 仅需 **一步（无迭代去噪）** 即可生成高质量轨迹。
