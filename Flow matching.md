@@ -86,6 +86,10 @@ $$
 
 传统的 Flow Matching（FM）和 Conditional Flow Matching（CFM）提供了无需模拟（simulation-free）的回归式目标，但在 minibatch 情况下仍有高方差与训练不稳的问题。
 
+<p align="center">
+<img src="./assets/FM_CFM_OT-CFM.png" alt="Figure 8. FM vs CFM vs OT-CFM." width="800">
+</p>
+
 **关键思想**：在 minibatch 层面上，用小批量间的最优传输（minibatch optimal transport, MIT/OT）来构建更直且低方差的条件映射，使得每个 batch 内的条件对（source→target）对齐更有结构性，从而显著降低训练目标的方差并使学到的流更接近全局 Optimal Transport（Wasserstein）解。论文把采用 OT 对齐的 CFM 称作 OT-CFM。
 
 ## 2024 arXiv(IEEE 2024): “Efficient Trajectory Forecasting and Generation with Conditional Flow Matching” (Ye et al.)
