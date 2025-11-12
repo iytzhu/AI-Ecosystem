@@ -89,6 +89,9 @@ $$
 
 提出轨迹条件 Flow Matching（T-CFM），学习时变向量场统一轨迹预测与生成任务，**强调实时决策**。在对抗性跟踪、飞行轨迹预测等场景中，比扩散模型预测准确率高 35%，规划性能提升 142%；采样速度快 100 倍，支持实时决策。
 
+## 2025 arXiv(ICML 2025 spotlight): “On the Guidance of Flow Matching” (Feng et al.)
+> [Paper](https://arxiv.org/abs/2502.02150) & [Openreview](https://openreview.net/forum?id=pKaNgFzJBy) & [Video](https://icml.cc/virtual/2025/poster/44016) & [Code](https://github.com/AI4Science-WestlakeU/flow_guidance)
+
 ## 2025 arXiv(CoRL 2025): “Streaming Flow Policy: Simplifying diffusion/flow-matching policies by treating action trajectories as flow trajectories” (Jiang et al.)
 > [Paper](https://arxiv.org/abs/2505.21851) & [Video](https://siddancha.github.io/streaming-flow-policy/) & [Code](https://github.com/CORE-Robotics-Lab/TCFM)
 
