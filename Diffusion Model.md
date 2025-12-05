@@ -15,6 +15,7 @@
   * [2021 — Ho et al. (Classifier-Free Guidance)](#2021—ho-et-al-classifier-free-diffusion-guidance)
   * [2023 - Loss-Guided Diffusion](#loss-guided-diffusion-icml-2023)
   * [2023 - universal guidance for diffusion models](#universal-guidance-for-diffusion-models)
+  * [2025 - JiT](#just-image-transformers)
 * [3 Specific Applications of Diffusion Models](#3-specific-applications-of-diffusion-models)
 
   * [3.1 Image Generation from Text Descriptions](#31-image-generation-from-text-descriptions)
@@ -294,6 +295,12 @@ $$
 ## **2023 arXiv (ICLR 2024): “Universal Guidance for Diffusion Models” (Bansal et al.)**
 
 > [Paper](https://arxiv.org/abs/2302.07121) & [Code](https://github.com/arpitbansal297/Universal-Guided-Diffusion)
+
+<a id="just-image-transformers"></a>
+
+## **2025 arXiv: “Back to Basics: Let Denoising Generative Models Denoise” (Li et al.)**
+
+> [Paper](https://arxiv.org/abs/2511.13720)
 
 ---
 
