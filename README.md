@@ -8,12 +8,12 @@ This repo curates the **key papers**, **timelines**, and **concept evolutions** 
 
 ## 📚 Contents
 
-| Category | Description | Link |
-|-----------|--------------|------|
-| 🌘 **Diffusion Models** | Timeline & key papers: DDPM, DDIM, Latent Diffusion, Stable Diffusion, Consistency Models, etc. | [📄 Diffusion Model.md](./Diffusion%20Model.md) |
-| 🐳 **Flow Matching** | Key developments: Flow Matching, Rectified Flow, and the bridge to diffusion-based generative modeling. | [📄 Flow matching.md](./Flow%20matching.md) |
-| 🦙 **Large Language Models (LLMs)** | Tracing the evolution from GPT to PaLM, LLaMA, Gemini, and beyond — architectures, scaling laws, training techniques. | [📄 LLMs.md](./LLMs.md) |
-| :basecampy: **Reinforcement Learning (RL)** | From classical algorithms (DQN, PPO) to AI agents, decision transformers, and RLHF. | [📄 RL.md](./RL.md) |
+| Category | Description |
+|-----------|--------------|
+| [🌘 **Diffusion Models**](./Diffusion%20Model.md) | Timeline & key papers: DDPM, DDIM, Latent Diffusion, Stable Diffusion, Consistency Models, etc. |
+| [🐳 **Flow Matching**](./Flow%20matching.md) | Key developments: Flow Matching, Rectified Flow, and the bridge to diffusion-based generative modeling. |
+| [🦙 **Large Language Models**](./LLMs.md) | Tracing the evolution from GPT to PaLM, LLaMA, Gemini, and beyond — architectures, scaling laws, training techniques. |
+| [:basecampy: **Reinforcement Learning**](./RL.md) | From classical algorithms (DQN, PPO) to AI agents, decision transformers, and RLHF. |
 
 ---
 
