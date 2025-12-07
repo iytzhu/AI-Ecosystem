@@ -300,7 +300,7 @@ $$
 
 ## **2025 arXiv: “Back to Basics: Let Denoising Generative Models Denoise” (Li et al.)**
 
-> [Paper](https://arxiv.org/abs/2511.13720)
+> [Paper](https://arxiv.org/abs/2511.13720) & [Code](https://github.com/LTH14/JiT)
 
 **核心思想**：流形假设认为，自然图像在高维像素空间中位于一个低维流形上。干净图像 $x$ 可以被建模为处于该流形上，而噪声 $\epsilon$ 或流速 $v$（例如 $v = x - \epsilon$）则本质上位于流形之外。
 
