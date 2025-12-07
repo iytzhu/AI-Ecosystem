@@ -1,5 +1,7 @@
 # flow matching timeline and key papers
 
+Flow Matching 模型可以被视为扩散建模框架中的一种 $v$-预测。与纯噪声不同， $v$ 是数据与噪声的组合。
+
 ## 2018 arXiv(NeurIPS 2018 Oral): “Neural Ordinary Differential Equations” (Chen et al.)
 > [Paper](https://neurips.cc/virtual/2018/oral/12596) & [Video](https://www.youtube.com/watch?v=V6nGT0Gakyg)
 
