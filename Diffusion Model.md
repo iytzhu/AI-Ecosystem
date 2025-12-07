@@ -305,12 +305,12 @@ $$
 **核心思想**：流形假设认为，自然图像在高维像素空间中位于一个低维流形上。干净图像 $x$ 可以被建模为处于该流形上，而噪声 $\epsilon$ 或流速 $v$（例如 $v = x - \epsilon$）则本质上位于流形之外。
 
 <p align="center">
-<img src="./assets/manifold_assumption.png" alt="Figure. The Manifold Assumption hypothesizes that natural images lie on a low-dimensional manifold within the highdimensional pixel space." width="700">
+<img src="./assets/manifold_assumption.png" alt="Figure. The Manifold Assumption hypothesizes that natural images lie on a low-dimensional manifold within the highdimensional pixel space." width="500">
 </p>
 
 在类似 Stable Diffusion 或 DDPM 的模型中，标准做法是训练神经网络来预测该噪声 $\epsilon$，或者预测速度 $v$（它是数据与噪声的混合）。作者指出，这个噪声向量本质上是高维的，这意味着想要完美预测它，你的神经网络需要拥有巨大的容量，以表示所有这些高维信息。然而，预测干净的数据 $x$ 则不同，因为 $x$ 位于低维流行上。因此，网络只需要学习该流形的结构，并将噪声数据映射回该流形，这实际上会过滤掉高维的噪声成分而不是记住它。
 
-如何实现这一点？来看预测目标和损失函数。如果知道时间步 $t$，可以在 $x$、$\epsilon$ 和 $v$ 之间进行转换。
+如何实现这一点？来看预测目标和损失函数。如果知道时间步 $t$，可以在 $x$、 $\epsilon$ 和 $v$ 之间进行转换。
 
 ---
 
