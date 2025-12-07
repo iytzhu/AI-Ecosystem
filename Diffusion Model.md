@@ -214,13 +214,13 @@ $$
 **学习方差**：作者首先指出尽管方差对于样本质量的重要性不及均值，但扩散过程的初始步骤对变分下界（VLB）的贡献最大。为改进对数似然，作者在对数域中将方差参数化为理论最优反向方差 \$\tilde \beta\_t\$ 与前向过程方差 \$\beta\_t\$ 之间的插值。引入一个**混合目标** $L_\text{hybrid}$，用于联合优化简化的 DDPM 目标 \$L\_\text{simple}\$（用于**噪声预测**）与 VLB \$L\_\text{vlb}\$（用于**似然优化**）。在该设置下， \$L\_\text{simple}\$ 作为更新均值网络 \$\mu\_\theta\$ 的主要信号，而通过对 \$\mu\_\theta\$ 应用 stop-gradient，确保 \$L\_\text{vlb}\$ 仅指导方差网络 \$\Sigma\_\theta\$ 的更新。
 
 <p align="center">
-<img src="./assets/Improved_linear_schedule_of_diffusion.png" alt="Figure 11. \$\bar \alpha\_t\$ throughout diffusion in the linear schedule and their proposed cosine schedule." width="500">
+<img src="./assets/Improved_linear_schedule_of_diffusion.png" alt="Figure 11. \$\bar \alpha\_t\$ throughout diffusion in the linear schedule and their proposed cosine schedule." width="400">
 </p>
 
 **改进噪声调度（Noise Schedule）**：作者提出了一种余弦（cosine）噪声时间表，使用平方余弦函数控制累积噪声水平 \$\bar \alpha\_t\$，确保在扩散过程的开始与结束阶段变化平缓，避免噪声骤增或信息过早破坏，同时允许中间阶段更快的变化。
 
 <p align="center">
-<img src="./assets/Improved_learning_curves_of_diffusion.png" alt="Figure 12. Learning curves comparing the log-likelihoods achieved by different objects on ImageNet 64×64." width="500">
+<img src="./assets/Improved_learning_curves_of_diffusion.png" alt="Figure 12. Learning curves comparing the log-likelihoods achieved by different objects on ImageNet 64×64." width="400">
 </p>
 
 **减少梯度噪声**：作者确认 \$L\_\text{vlb}\$ 中不同项量级差异很大是造成梯度噪声的来源。为此，他们采用一种**重要性采样策略**，基于每个损失项历史均方值动态调整采样概率，从而显著减少梯度噪声。该方法使得直接优化 \$L\_\text{vlb}\$ 成为可行，并在训练过程中实现比混合目标 \$L\_\text{hybrid}\$ 更平滑且更优的对数似然性能。
@@ -305,12 +305,26 @@ $$
 **核心思想**：流形假设认为，自然图像在高维像素空间中位于一个低维流形上。干净图像 $x$ 可以被建模为处于该流形上，而噪声 $\epsilon$ 或流速 $v$（例如 $v = x - \epsilon$）则本质上位于流形之外。
 
 <p align="center">
-<img src="./assets/manifold_assumption.png" alt="Figure. The Manifold Assumption hypothesizes that natural images lie on a low-dimensional manifold within the highdimensional pixel space." width="500">
+<img src="./assets/manifold_assumption.png" alt="Figure. The Manifold Assumption hypothesizes that natural images lie on a low-dimensional manifold within the highdimensional pixel space." width="450">
 </p>
 
-在类似 Stable Diffusion 或 DDPM 的模型中，标准做法是训练神经网络来预测该噪声 $\epsilon$，或者预测速度 $v$（它是数据与噪声的混合）。作者指出，这个噪声向量本质上是高维的，这意味着想要完美预测它，你的神经网络需要拥有巨大的容量，以表示所有这些高维信息。然而，预测干净的数据 $x$ 则不同，因为 $x$ 位于低维流行上。因此，网络只需要学习该流形的结构，并将噪声数据映射回该流形，这实际上会过滤掉高维的噪声成分而不是记住它。
+在类似 Stable Diffusion 或 DDPM 的模型中，标准做法是训练神经网络来预测该噪声 $\epsilon$，或者预测速度 $v$（它是数据与噪声的混合）。作者指出，这个噪声向量本质上是高维的，这意味着想要完美预测它，神经网络需要拥有巨大的容量，以表示所有这些高维信息。然而，预测干净的数据 $x$ 则不同，因为 $x$ 位于低维流行上。因此，网络只需要学习该流形的结构，并将噪声数据映射回该流形，这实际上会过滤掉高维的噪声成分而不是记住它。
 
-如何实现这一点？来看预测目标和损失函数。如果知道时间步 $t$，可以在 $x$、 $\epsilon$ 和 $v$ 之间进行转换。
+如果知道时间步 $t$，可以在 $x$、 $\epsilon$ 和 $v$ 之间进行转换。
+
+<p align="center">
+<img src="./assets/all_possible_combinations.png" alt="Figure. All possible combinations of defining the loss and network prediction in x, v, or ϵ spaces." width="700">
+</p>
+
+当给定从一种预测空间到另一种预测空间的重参数化时，损失实际上会被重新加权。无论采用哪种组合，在推理阶段进行采样时，都可以将网络输出转换到 $v$ 空间，然后利用 ODE 式 $\frac{dz_t}{dt} = v_\theta(z_t, t)$ 进行采样。
+
+在玩具实验中，使用 5 层 ReLU MLP（隐藏单元维度为 256）作为生成器进行训练，随着观测维度 $D$ 的增加，只有 $x$-prediction 能够产生合理的结果。这启发作者，只要采用 $x$-prediction，直接在像素上运行的普通 Vision Transformer（ViT）就能够取得令人惊讶的良好效果。
+
+无需 UNet 风格的 encoder-decoder、skip connection，作者构建了纯 Transformer 驱动、与任务解耦、对任意像素分辨率都可扩展的通用扩散模型 **JiT**，核心思想是：把时间步 $t$ 的信息插入到 Transformer 的 input token 中，而不是额外分支或调制网络，
+
+<p align="center">
+<img src="./assets/JiT.png" alt="Figure. The “Just image Transformer” (JiT) architecture: simply a plain ViT on patches of pixels for x-prediction." width="350">
+</p>
 
 ---
 
